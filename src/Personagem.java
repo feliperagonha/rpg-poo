@@ -1,5 +1,5 @@
 public class Personagem {
-    private string nome;
+    private String nome;
     private byte pontosVida;
     private int ataque;
     private int Defesa;

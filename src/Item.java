@@ -1,6 +1,6 @@
 public class Item {
-    private string nome;
-    private string descricao;
-    private string efeito;
+    private String nome;
+    private String descricao;
+    private String efeito;
     private short quantidade;
 }
