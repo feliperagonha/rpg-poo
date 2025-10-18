@@ -5,26 +5,73 @@
  subclasse berseker,oraculo,cacador.
  */
 public abstract class Personagem {
-    protected String nome;
-    protected byte pontosVida;
-    protected int ataque;
-    protected int defesa;
-    protected short nivel;
-    protected Inventario inventario;
+    private String nome;
+    private int pontosVida;
+    private int ataque;
+    private int defesa;
+    private short nivel;
+    private Inventario inventario;
 
     public Personagem(String nome, byte pontosVida, int ataque, int defesa,short nivel){
-        this.nome = nome;
+        this.setNome(nome);
+        this.setPontosVida(pontosVida);
+        this.setAtaque(ataque);
+        this.setDefesa(defesa);
+        this.setNivel(nivel);
+        this.setInventario();
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public byte getPontosVida() {
+        return pontosVida;
+    }
+
+    public int getAtaque() {
+        return ataque;
+    }
+
+    public int getDefesa() {
+        return defesa;
+    }
+
+    public short getNivel() {
+        return nivel;
+    }
+
+    public Inventario getInventario() {
+        return inventario;
+    }
+
+    public void setPontosVida(byte pontosVida) {
         this.pontosVida = pontosVida;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setAtaque(int ataque) {
         this.ataque = ataque;
+    }
+
+    public void setDefesa(int defesa) {
         this.defesa = defesa;
+    }
+
+    public void setNivel(short nivel) {
         this.nivel = nivel;
-        this.inventario = new Inventario(); // cada personagem vai ter o seu proprio inventario
+    }
+
+    public void setInventario() {
+        this.inventario = new Inventario();
     }
 
     public void mostrarInfos(){
-        System.out.printf("nome: '%s'\npontosDeVida = %d\nataque = %d\ndefesa = %d\nnivel = %d",nome,pontosVida,ataque,defesa,nivel);;
+        System.out.printf("nome: '%s'\npontosDeVida = %d\nataque = %d\ndefesa = %d\nnivel = %d",getNome(),getPontosVida(),getAtaque(),getDefesa(),getNivel());;
     };
-
 
     @Override
     public String toString(){
