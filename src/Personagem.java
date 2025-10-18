@@ -20,6 +20,16 @@ public abstract class Personagem {
         this.nivel = nivel;
         this.inventario = new Inventario(); // cada personagem vai ter o seu proprio inventario
     }
+
+    public void mostrarInfos(){
+        System.out.printf("nome: '%s'\npontosDeVida = %d\nataque = %d\ndefesa = %d\nnivel = %d",nome,pontosVida,ataque,defesa,nivel);;
+    };
+
+
+    @Override
+    public String toString(){
+        return String.format("nome: '%s', pontosDeVida = %d, ataque = %d, defesa = %d, nivel = %d",nome,pontosVida,ataque,defesa,nivel);
+    }
 }
 
 
