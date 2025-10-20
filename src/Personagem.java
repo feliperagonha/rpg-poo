@@ -9,10 +9,10 @@ public abstract class Personagem {
     private int pontosVida;
     private int ataque;
     private int defesa;
-    private short nivel;
+    private byte nivel;
     private Inventario inventario;
 
-    public Personagem(String nome, byte pontosVida, int ataque, int defesa,short nivel){
+    public Personagem(String nome, int pontosVida, int ataque, int defesa,byte nivel){
         this.setNome(nome);
         this.setPontosVida(pontosVida);
         this.setAtaque(ataque);
@@ -25,7 +25,7 @@ public abstract class Personagem {
         return nome;
     }
 
-    public byte getPontosVida() {
+    public int getPontosVida() {
         return pontosVida;
     }
 
@@ -45,7 +45,7 @@ public abstract class Personagem {
         return inventario;
     }
 
-    public void setPontosVida(byte pontosVida) {
+    public void setPontosVida(int pontosVida) {
         this.pontosVida = pontosVida;
     }
 
@@ -61,7 +61,7 @@ public abstract class Personagem {
         this.defesa = defesa;
     }
 
-    public void setNivel(short nivel) {
+    public void setNivel(byte nivel) {
         this.nivel = nivel;
     }
 
