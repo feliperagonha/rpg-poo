@@ -23,6 +23,32 @@ public class Inventario {
         this.itens.add(itemParaAdicionar);
     }
 
+    public boolean removerItem(String nomeDoItem, int quantidadeParaRemover){
+
+        for(int i = 0; i < this.itens.size(); i++){
+            Item itemExistente = this.itens.get(i); // pega o item no indice 'i'
+
+            //verifica se o item do indice 'i' é o item q queremos remover
+            if(itemExistente.getNome().equalsIgnoreCase(nomeDoItem)){
+
+                int novaQuantidade = itemExistente.getQuantidade() - quantidadeParaRemover;
+
+                if (novaQuantidade <= 0){
+                    //se for menor ou igual a zero significa q o item acabou 'usamos todas as poçoes e estamos sem agora
+                    this.itens.remove(i);
+                }else{
+                    //caso nao apenas diminui a qtd msm
+                    itemExistente.setQuantidade((short)novaQuantidade);
+                }
+
+                //encontrou o item e removeu ele
+                return true;
+            }
+        }
+        //se chegar aqui é pq nao tem aquele item no inventario
+        return false;
+    }
+
     public void listarItens(){
         if(this.itens.isEmpty()){
             System.out.println("O inventario está vazio.");
