@@ -21,53 +21,19 @@ public abstract class Personagem {
         this.setInventario();
     }
 
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() {return nome;}
+    public int getPontosVida() {return pontosVida;}
+    public int getAtaque() {return ataque;}
+    public int getDefesa() {return defesa;}
+    public short getNivel() {return nivel;}
+    public Inventario getInventario() {return inventario;}
 
-    public int getPontosVida() {
-        return pontosVida;
-    }
-
-    public int getAtaque() {
-        return ataque;
-    }
-
-    public int getDefesa() {
-        return defesa;
-    }
-
-    public short getNivel() {
-        return nivel;
-    }
-
-    public Inventario getInventario() {
-        return inventario;
-    }
-
-    public void setPontosVida(int pontosVida) {
-        this.pontosVida = pontosVida;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setAtaque(int ataque) {
-        this.ataque = ataque;
-    }
-
-    public void setDefesa(int defesa) {
-        this.defesa = defesa;
-    }
-
-    public void setNivel(byte nivel) {
-        this.nivel = nivel;
-    }
-
-    public void setInventario() {
-        this.inventario = new Inventario();
-    }
+    public void setPontosVida(int pontosVida) {this.pontosVida = pontosVida;}
+    public void setNome(String nome) {this.nome = nome;}
+    public void setAtaque(int ataque) {this.ataque = ataque;}
+    public void setDefesa(int defesa) {this.defesa = defesa;}
+    public void setNivel(byte nivel) {this.nivel = nivel;}
+    public void setInventario() {this.inventario = new Inventario();}
 
     public void mostrarInfos(){
         System.out.printf("nome: '%s'\npontosDeVida = %d\nataque = %d\ndefesa = %d\nnivel = %d",getNome(),getPontosVida(),getAtaque(),getDefesa(),getNivel());;
