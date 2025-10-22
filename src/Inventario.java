@@ -2,13 +2,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Inventario {
+public class Inventario implements Cloneable{
     private List<Item> itens;
 
     public Inventario(){
     //array list é um tipo de vetor do java, como se fosse uma lista do python aonde
     // você pode adicionar e remover da lista sem se preocupar em ficar falando o espaço do vetor
         this.itens  = new ArrayList<>();
+    }
+
+    //construtor de copia
+    public Inventario(Inventario original){
+        this.itens = new ArrayList<>();
+
+        //para cada item do inventario original
+        for(Item itemOriginal : original.itens){
+
+            Item copiaDoItem = new Item(itemOriginal);
+
+            this.itens.add(copiaDoItem);
+        }
     }
 
     public void adicionarItem(Item itemParaAdicionar) {
@@ -81,5 +94,10 @@ public class Inventario {
             System.out.println("- " + item.getNome() + " (x" + item.getQuantidade() + ")");
         }
         System.out.println("-----------------");
+    }
+
+    @Override
+    public Inventario clone(){
+        return new Inventario(this);
     }
 }
