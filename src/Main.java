@@ -1,10 +1,10 @@
-public class Jogo{
+public class Main{
     public static void main(String [] args){
-        Tela.imprimirHistoria();
 
+        Jogo meuJogo = new Jogo();
 
-        System.out.println("\n\n--- FIM DA INTRODUÇÃO ---");
-        System.out.println("O jogo está começando");
+        meuJogo.iniciar();
+
 
     }
 }

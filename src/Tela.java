@@ -99,6 +99,10 @@ public class Tela {
         }
     }
 
+    public void narrar(String texto){
+        imprimirComEfeito(texto);
+    }
+
     public static void imprimirMenuPrincipal() {
         System.out.println("=== A Runa Despertada ===");
         System.out.println("1. Novo Jogo");
@@ -110,6 +114,14 @@ public class Tela {
         System.out.println("--- STATUS ---");
         personagem.mostrarInfos();
         System.out.println("--------------");
+    }
+
+    public static void imprimirStatusBatalha(Personagem jogador, Personagem inimigo) {
+        System.out.println("----------------------------------------");
+        System.out.printf("| %s: %d HP    vs    %s: %d HP |\n",
+                jogador.getNome(), jogador.getPontosVida(),
+                inimigo.getNome(), inimigo.getPontosVida());
+        System.out.println("----------------------------------------");
     }
 
     public static void imprimirAcaoDeCombate(String acao) {
