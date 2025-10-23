@@ -39,6 +39,16 @@ public abstract class Personagem {
         System.out.printf("nome: '%s'\npontosDeVida = %d\nataque = %d\ndefesa = %d\nnivel = %d",getNome(),getPontosVida(),getAtaque(),getDefesa(),getNivel());;
     };
 
+    public boolean estaVivo(){
+        return this.getPontosVida() > 0;
+    }
+
+    public void receberDano(int dano){
+        if(dano > 0){
+            this.setPontosVida(getPontosVida() - dano);
+        }
+    }
+
     @Override
     public String toString(){
         return String.format("nome: '%s', pontosDeVida = %d, ataque = %d, defesa = %d, nivel = %d",nome,pontosVida,ataque,defesa,nivel);
