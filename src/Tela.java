@@ -99,7 +99,7 @@ public class Tela {
         }
     }
 
-    public void narrar(String texto){
+    public static   void narrar(String texto){
         imprimirComEfeito(texto);
     }
 
@@ -133,6 +133,23 @@ public class Tela {
         System.out.println("(Floresta) -- (Vila) -- (Porto)");
         System.out.println("                  |");
         System.out.println("               (Mar)");
+    }
+
+    public static void imprimirMenuDeBatalha(){
+        System.out.println("--- O que você faz? ---");
+        System.out.println("1. Atacar");
+        System.out.println("2. Usar Item");
+        System.out.println("3. Fugir");
+        System.out.println("-------------------------");
+    }
+    //o oraculo é o unico q tem um sub menu so pra ele pq ele é o unico q tem habilidade ativa
+    public static void imprimirMenuOraculo() {
+        System.out.println("--- Habilidades de Oráculo ---");
+        System.out.println("1. Ataque Básico (Dano Físico)");
+        System.out.println("2. Habilidade: Curar");
+        System.out.println("3. Habilidade: Amaldiçoar");
+        System.out.println("4. Voltar");
+        System.out.println("------------------------------");
     }
 
 }
