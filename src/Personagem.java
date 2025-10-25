@@ -57,28 +57,43 @@ public abstract class Personagem implements Cloneable {
 
     // Setters
     public void setPontosVida(int pontosVida){this.pontosVida = pontosVida;}
-    public void setPontosVidaMax(int pontosVidaMax) {this.pontosVidaMax = pontosVidaMax;}
+    public void setPontosVidaMax(int pontosVidaMax) throws Exception
+    {
+        if (pontosVidaMax < 1) {
+            throw new Exception("Vida máxima deve ser maior que zero");
+        }
+        this.pontosVidaMax = pontosVidaMax;
+    }
+    
     public void setNome(String nome) throws Exception
     {
         if (nome == null) { throw new Exception("Nome ausente");}
         this.nome = nome;
     }
+
     public void setAtaque(int ataque) throws Exception
     {
         if (ataque < 0) { throw new Exception("Ataque inválido");}
         this.ataque = ataque;
     }
+
     public void setDefesa(int defesa) throws Exception 
     {
         if (defesa < 0) { throw new Exception("Defesa inválido");}
         this.defesa = defesa;
     }
+
     public void setNivel(byte nivel) throws Exception 
     {
         if (nivel < 1) { throw new Exception("Nível inválido");}
         this.nivel = nivel;
     }
-    public void setInventario() {this.inventario = new Inventario();}
+
+    public void setInventario(Inventario inventario) throws Exception 
+    {
+        if (inventario == null) throw new Exception("Inventário ausente");
+        this.inventario = inventario.clone(); // Deep copy
+    }
 
     // Método abstrato que cada subclasse implementará
     public abstract String habilidadeEspecial();
@@ -94,7 +109,8 @@ public abstract class Personagem implements Cloneable {
     }
 
     // Método Dano do Personagem
-    public void receberDano(int dano) {
+    public void receberDano(int dano) throws Exception {
+        if(dano < 0) throw new Exception("Dano inválido");
         int danoReal = Math.max(0, dano - this.defesa); // Dano - Defesa
         this.pontosVida -= danoReal;
         if (this.pontosVida < 0) {
@@ -102,7 +118,8 @@ public abstract class Personagem implements Cloneable {
         }
     }
     // Método Curar
-    public void curar(int quantidade) {
+    public void curar(int quantidade) throws Exception {
+        if (quantidade < 0) throw new Exception("Quantidade de cura inválida.");
         if (quantidade > 0) {
             this.pontosVida += quantidade;
             if (this.pontosVida > this.pontosVidaMax) { // validação se a cura der mais que a vida maxima
