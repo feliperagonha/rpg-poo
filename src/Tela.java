@@ -105,9 +105,9 @@ public class Tela {
 
     public static void imprimirMenuPrincipal() {
         System.out.println("=== A Runa Despertada ===");
-        System.out.println("1. Novo Jogo");
-        System.out.println("2. Carregar Jogo");
-        System.out.println("3. Sair");
+        System.out.println("1. Novo Jogo"             );
+        System.out.println("2. Carregar Jogo"         );
+        System.out.println("3. Sair"                  );
     }
 
     public static void imprimirStatus(Personagem personagem) {
@@ -119,8 +119,8 @@ public class Tela {
     public static void imprimirStatusBatalha(Personagem jogador, Personagem inimigo) {
         System.out.println("----------------------------------------");
         System.out.printf("| %s: %d HP    vs    %s: %d HP |\n",
-                jogador.getNome(), jogador.getPontosVida(),
-                inimigo.getNome(), inimigo.getPontosVida());
+                jogador.getNome(), jogador.getPontosVida()           ,
+                inimigo.getNome(), inimigo.getPontosVida()             );
         System.out.println("----------------------------------------");
     }
 
@@ -129,26 +129,26 @@ public class Tela {
     }
 
     public static void imprimirMapa() {
-        System.out.println("--- Mapa ---");
+        System.out.println("--- Mapa ---"                   );
         System.out.println("(Floresta) -- (Vila) -- (Porto)");
-        System.out.println("                  |");
-        System.out.println("               (Mar)");
+        System.out.println("                  |"            );
+        System.out.println("               (Mar)"           );
     }
 
     public static void imprimirMenuDeBatalha(){
-        System.out.println("--- O que você faz? ---");
-        System.out.println("1. Atacar");
-        System.out.println("2. Usar Item");
-        System.out.println("3. Fugir");
+        System.out.println("--- O que você faz? ---"  );
+        System.out.println("1. Atacar"                );
+        System.out.println("2. Usar Item"             );
+        System.out.println("3. Fugir"                 );
         System.out.println("-------------------------");
     }
     //o oraculo é o unico q tem um sub menu so pra ele pq ele é o unico q tem habilidade ativa
     public static void imprimirMenuOraculo() {
         System.out.println("--- Habilidades de Oráculo ---");
         System.out.println("1. Ataque Básico (Dano Físico)");
-        System.out.println("2. Habilidade: Curar");
-        System.out.println("3. Habilidade: Amaldiçoar");
-        System.out.println("4. Voltar");
+        System.out.println("2. Habilidade: Curar"          );
+        System.out.println("3. Habilidade: Amaldiçoar"     );
+        System.out.println("4. Voltar"                     );
         System.out.println("------------------------------");
     }
 
