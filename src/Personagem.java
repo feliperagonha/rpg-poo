@@ -95,8 +95,14 @@ public abstract class Personagem implements Cloneable {
         this.inventario = inventario.clone(); // Deep copy
     }
 
-    // Método abstrato que cada subclasse implementará
-    public abstract String habilidadeEspecial();
+
+    public String habilidadeEspecial() {
+        return this.getNome() + " não possui uma habilidade especial ativa.";
+    }
+    //sobrecarga
+    public String habilidadeEspecial(int escolha) throws Exception {
+        return this.getNome() + " não possui múltiplas habilidades.";
+    }
 
     public void mostrarInfos()
     {

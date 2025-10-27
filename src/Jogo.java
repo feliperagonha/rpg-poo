@@ -9,11 +9,11 @@ public class Jogo {
         System.out.println("O jogo está começando");
     }
 
-    public void batalhar(Inimigo inimigo){
+    public void batalhar(Inimigo inimigo) throws Exception {
         Tela.narrar("Um " + inimigo.getNome() + " selvagem aparece");
         while(this.jogador.estaVivo() && inimigo.estaVivo()) {
             Tela.imprimirStatusBatalha(this.jogador, inimigo);
-            Tela.imprimirMenuDeBatalha();
+            Tela.imprimirMenuBatalha(this.jogador);
 
             int escolha = -1;
             try{
@@ -56,7 +56,7 @@ public class Jogo {
         }
     }
 
-    public void tratarTurnoOraculo(Inimigo inimigo){
+    public void tratarTurnoOraculo(Inimigo inimigo) throws Exception {
         Tela.imprimirMenuOraculo();
         int escolhaMagia = -1;
         try{
@@ -105,7 +105,7 @@ public class Jogo {
 
     }
 
-    public void tratarTurnoAtaquePadrao(Inimigo inimigo){
+    public void tratarTurnoAtaquePadrao(Inimigo inimigo) throws Exception {
         if(this.jogador.getClass() == Berserker.class){
             //serve para q o inimigo sempre ataque primeiro do q o berseker
             executarTurno(inimigo, this.jogador);
@@ -122,37 +122,60 @@ public class Jogo {
         }
     }
 
-    public void executarTurno(Personagem atacante, Personagem alvo){
+    public void executarTurno(Personagem atacante, Personagem alvo) throws Exception {
         int resultadoDado = Dado.rolar(6); //passando um dado de 6 lados
 
         int ataqueBase = atacante.getAtaque();
+        int defesaBaseOriginal = atacante.getDefesa();
+        int ataqueBaseComBonus = atacante.getAtaque();
+
+        String narracaoHabilidade = null;
+        boolean habilidadeAtivada = false;
+
 
         //habilidades passivas berseker
-        if(atacante.getClass() == Berserker.class && atacante.getPontosVida() < (150 * 0.5)){ //50% da vida maxima
-            Tela.narrar("FURIA DO BERSEKER ATIVADA!");
-            ataqueBase += 5;
+        if(atacante.getClass() == Berserker.class && atacante.getPontosVida() < (atacante.getPontosVidaMax() * 0.5)){ //50% da vida maxima
+            narracaoHabilidade = atacante.habilidadeEspecial();
+            ataqueBaseComBonus = atacante.getAtaque();
+            habilidadeAtivada = true;
         }
 
-        int ataqueTotal = ataqueBase + resultadoDado;
-        int defesaAlvo = alvo.getDefesa();
 
-        int dano = ataqueTotal - defesaAlvo;
-
-        //habilidade passiva do cacador
         if(atacante.getClass() == Cacador.class){
             if (Dado.rolar(100) <= 25){
-                Tela.narrar("GOLPE CRITICO DO CAÇADOR");
-                dano *= 2;
+                narracaoHabilidade = atacante.habilidadeEspecial();
+                ataqueBaseComBonus = atacante.getAtaque();
+                habilidadeAtivada = true;
             }
+        }
+        int ataqueTotal = ataqueBaseComBonus + resultadoDado;
+        int defesaAlvo = alvo.getDefesa();
+
+        if(narracaoHabilidade != null){
+            Tela.narrar(narracaoHabilidade);
+        }
+        Tela.narrar(atacante.getNome() + " ataca com " + ataqueBaseComBonus +
+                " + (" + resultadoDado + " no dado) = " + ataqueTotal + " de força!");
+
+        alvo.receberDano(ataqueTotal);
+
+        if (ataqueTotal <= defesaAlvo) {
+            Tela.narrar(alvo.getNome() + " defende o ataque completamente!");
+        } else {
+            int danoParaNarrar = Math.max(0, ataqueTotal - defesaAlvo);
+            Tela.narrar(alvo.getNome() + " defende " + defesaAlvo + " e recebe " + danoParaNarrar + " de dano!");
+        }
+        if (habilidadeAtivada) {
+            atacante.setAtaque(ataqueBase); // Volta ao ataque normal
+
+
+            if (atacante.getClass() == Berserker.class) {
+                atacante.setDefesa(defesaBaseOriginal);
+            }
+            Tela.narrar(atacante.getNome() + " volta ao normal.");
         }
 
         Tela.narrar(atacante.getNome() + " ataca com " + ataqueBase + " + (" + resultadoDado + " no dado) = " + ataqueTotal + " de força!");
 
-        if(dano > 0){
-            Tela.narrar(alvo.getNome() + " defende " + defesaAlvo + " e recebe " + dano + " de dano!");
-            alvo.receberDano(dano);
-        }else{
-            Tela.narrar(alvo.getNome() + " defende o ataque completamente!");
-        }
     }
 }

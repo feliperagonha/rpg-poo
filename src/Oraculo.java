@@ -16,16 +16,23 @@ public class Oraculo extends Personagem{
     public Oraculo(Oraculo outro) throws Exception {
         super(outro);
     }
-    
 
     @Override
     public String habilidadeEspecial() {
-        try {
-            this.setDefesa(this.getDefesa() + 10);
-            this.curar(20);
-            return this.getNome() + " ativa VISÃO RÚNICA! Defesa +10, HP +20";
-        } catch (Exception e) {
-            return "Erro ao ativar habilidade!";
+        return "O Oráculo precisa escolher qual habilidade usar no sub-menu.";
+    }
+
+    @Override
+    public String habilidadeEspecial(int escolha) throws Exception {
+        switch (escolha) {
+            case 1: // Curar
+                this.curar(25);
+                return this.getNome() + " usa a runa de CURA! (HP +25)";
+            case 2: // Amaldiçoar
+                // [LÓGICA DA MALDIÇÃO PENDENTE]
+                return this.getNome() + " usa a runa de AMALDIÇOAR! (Defesa do Inimigo Reduzida)";
+            default:
+                return this.getNome() + " decide não usar uma habilidade.";
         }
     }
 }
