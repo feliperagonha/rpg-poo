@@ -1,4 +1,4 @@
-public class Jogo {
+public class Jogo{
     private Personagem jogador;
 
     public void iniciar(){
@@ -40,7 +40,108 @@ public class Jogo {
         }
     }
 
+    private void novoJogo() throws Exception{
+        Tela.imprimirMenuSaves();
+        int slot = -1;
 
+        while(slot < 1 || slot > 3) {
+            try {
+                Tela.narrar("Escolha o slot (de 1 a 3)");
+                slot = Teclado.getUmInt();
+                if (slot < 1 || slot > 3) {
+                    Tela.narrar("Slot inválido!");
+                }
+
+            } catch (Exception e) {
+                Tela.narrar("Erro: Entrada inválida. Por favor, digite 1, 2 ou 3.");
+                Teclado.getUmString();
+            }
+        }
+
+        Tela.narrar("O jogo vai ser salvo no slot " + slot + ".");
+        Tela.esperarEnter();
+
+        Tela.limparTela();
+        Tela.imprimirHistoria();
+        Tela.narrar("\nAo tocar a pedra, suas mãos formigam...");
+        Tela.narrar("Um brilho intenso emana das runas, cegando você momentaneamente!");
+        Tela.esperarEnter();
+
+
+        this.jogador = criarPersonagem();
+
+        Tela.narrar("\nPersonagem criado com sucesso!");
+        Tela.imprimirStatus(this.jogador);
+        Tela.esperarEnter();
+        iniciarJornada();
+    }
+
+    private Personagem criarPersonagem() throws Exception {
+    Tela.limparTela();
+    Tela.narrar("--- Criação de Personagem ---");
+    Tela.narrar("A energia da runa ressoa em você. Quem você se tornará?");
+    Tela.narrar("1. O Berserker (Guerreiro): Força bruta indomável.");
+    Tela.narrar("2. O Oráculo (Mago): Conexão com a sabedoria ancestral.");
+    Tela.narrar("3. O Caçador (Arqueiro): Instintos e precisão letais.");
+    Tela.narrar("--------------------------------");
+
+    int escolhaClasse = -1;
+    Personagem personagemEscolhido = null;
+
+    // Loop para escolha da classe
+    while (personagemEscolhido == null) {
+        Tela.narrar("Escolha sua classe (1-3):");
+        try {
+            escolhaClasse = Teclado.getUmInt();
+            switch (escolhaClasse) {
+                case 1:
+                    personagemEscolhido = new Berserker();
+                    break;
+                case 2:
+                    personagemEscolhido = new Oraculo();
+                    break;
+                case 3:
+                    personagemEscolhido = new Cacador();
+                    break;
+                default: Tela.narrar("Classe inválida!"); break;
+            }
+        } catch (Exception e) {
+            Tela.narrar("Erro: Entrada inválida."); Teclado.getUmString();
+        }
+    }
+    Tela.narrar("Você escolheu ser um " + personagemEscolhido.getNome() + "!");
+
+    // Loop para escolha do nome
+    String nomeEscolhido = "";
+    while (nomeEscolhido.trim().isEmpty()) {
+        Tela.narrar("\nComo você se chama?");
+        nomeEscolhido = Teclado.getUmString();
+        if (nomeEscolhido.trim().isEmpty()) {
+            Tela.narrar("O nome não pode ser vazio.");
+        }
+    }
+    // Define o nome escolhido no personagem
+    personagemEscolhido.setNome(nomeEscolhido);
+
+    return personagemEscolhido;
+}
+
+    private void iniciarJornada() {
+        Tela.limparTela();
+        Tela.narrar("--- A Jornada Começa ---");
+        Tela.narrar("Você reúne sua pequena tripulação e parte no 'Corvo Marinho'...");
+        Tela.narrar("\n(Aqui a história continuará...)");
+        Tela.esperarEnter();
+
+        // [TAREFA PENDENTE: Implementar a lógica dos Atos I, II, III aqui]
+        // Ex:
+        // Tela.narrar("ATO I: O INVERNO SEM FIM");
+        // Tela.narrar("Você avista uma ilha nebulosa...");
+        // int decisao1 = Teclado.getUmInt(); ...
+        // if (decisao1 == 1) {
+        //    batalhar(Inimigo.criarDraugr());
+        // } else { ... }
+    }
 
     public void batalhar(Inimigo inimigo) throws Exception {
         Tela.narrar("Um " + inimigo.getNome() + " selvagem aparece");
@@ -211,4 +312,8 @@ public class Jogo {
         Tela.narrar(atacante.getNome() + " ataca com " + ataqueBase + " + (" + resultadoDado + " no dado) = " + ataqueTotal + " de força!");
 
     }
+
+
 }
+
+
