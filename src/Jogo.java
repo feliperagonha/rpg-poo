@@ -2,12 +2,45 @@ public class Jogo {
     private Personagem jogador;
 
     public void iniciar(){
-        Tela.imprimirHistoria();
-
-
-        System.out.println("\n\n--- FIM DA INTRODUÇÃO ---");
-        System.out.println("O jogo está começando");
+        exibirMenuPrincipal();
     }
+
+    private void exibirMenuPrincipal(){
+        int opc = -1;
+        while(opc != 3){
+            Tela.imprimirMenuPrincipal();
+            try{
+                Tela.narrar("Digite sua escolha:");
+                opc = Teclado.getUmInt();
+
+                switch (opc){
+                    case 1:
+                        novoJogo();
+                        break;
+
+                    case 2:
+                        Tela.narrar("Função carregar jogo");
+                        Tela.esperarEnter();
+                        break;
+
+                    case 3:
+                        Tela.narrar("Saindo do jogo... Até a proxima!");
+                        break;
+                    default:
+                        Tela.narrar("Opcao invalida");
+                        Tela.esperarEnter();
+                        break;
+                }
+
+            }catch (Exception e){
+                Tela.narrar("Erro: Entrada invalida. Por favor digite um numero");
+                Teclado.getUmString(); //pra limpar o buffer
+                Tela.esperarEnter();
+            }
+        }
+    }
+
+
 
     public void batalhar(Inimigo inimigo) throws Exception {
         Tela.narrar("Um " + inimigo.getNome() + " selvagem aparece");

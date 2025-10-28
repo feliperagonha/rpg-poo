@@ -62,7 +62,7 @@ public class Tela {
         }
     }
 
-    private static void esperarEnter(){
+    public static void esperarEnter(){
         System.out.println("\n[Pressione enter para continuar...]");
         Teclado.getUmString();
         limparTela();
@@ -104,10 +104,19 @@ public class Tela {
     }
 
     public static void imprimirMenuPrincipal() {
+        limparTela();
         System.out.println("=== A Runa Despertada ===");
         System.out.println("1. Novo Jogo"             );
         System.out.println("2. Carregar Jogo"         );
         System.out.println("3. Sair"                  );
+    }
+    public static void imprimirMenuSaves() {
+        limparTela();
+        narrar("--- Escolha um Slot para Salvar ---");
+        narrar("1. Save Slot 1");
+        narrar("2. Save Slot 2");
+        narrar("3. Save Slot 3");
+        narrar("-----------------------------------");
     }
 
     public static void imprimirStatus(Personagem personagem) {
