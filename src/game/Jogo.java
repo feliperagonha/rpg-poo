@@ -1,3 +1,9 @@
+package game;
+
+import model.*;
+import util.*;
+
+
 public class Jogo{
     private Personagem jogador;
 
@@ -70,7 +76,7 @@ public class Jogo{
 
         this.jogador = criarPersonagem();
 
-        Tela.narrar("\nPersonagem criado com sucesso!");
+        Tela.narrar("\nmodel.Personagem criado com sucesso!");
         Tela.imprimirStatus(this.jogador);
         Tela.esperarEnter();
         iniciarJornada();
@@ -78,9 +84,9 @@ public class Jogo{
 
     private Personagem criarPersonagem() throws Exception {
     Tela.limparTela();
-    Tela.narrar("--- Criação de Personagem ---");
+    Tela.narrar("--- Criação de model.Personagem ---");
     Tela.narrar("A energia da runa ressoa em você. Quem você se tornará?");
-    Tela.narrar("1. O Berserker (Guerreiro): Força bruta indomável.");
+    Tela.narrar("1. O model.Berserker (Guerreiro): Força bruta indomável.");
     Tela.narrar("2. O Oráculo (Mago): Conexão com a sabedoria ancestral.");
     Tela.narrar("3. O Caçador (Arqueiro): Instintos e precisão letais.");
     Tela.narrar("--------------------------------");
@@ -135,11 +141,11 @@ public class Jogo{
 
         // [TAREFA PENDENTE: Implementar a lógica dos Atos I, II, III aqui]
         // Ex:
-        // Tela.narrar("ATO I: O INVERNO SEM FIM");
-        // Tela.narrar("Você avista uma ilha nebulosa...");
-        // int decisao1 = Teclado.getUmInt(); ...
+        // util.Tela.narrar("ATO I: O INVERNO SEM FIM");
+        // util.Tela.narrar("Você avista uma ilha nebulosa...");
+        // int decisao1 = util.Teclado.getUmInt(); ...
         // if (decisao1 == 1) {
-        //    batalhar(Inimigo.criarDraugr());
+        //    batalhar(model.Inimigo.criarDraugr());
         // } else { ... }
     }
 

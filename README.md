@@ -21,10 +21,10 @@ Durante a aventura, o jogador poderá escolher entre **três classes distintas**
   O terminal é limpo automaticamente após certas interações, garantindo uma experiência fluida e sem poluição visual.
 
 - **🧠 Entrada de Dados Robusta:**  
-  Uma classe utilitária (`Teclado.java`) é responsável por todo o gerenciamento de entrada do usuário, com tratamento de erros e validações para evitar falhas durante o jogo.
+  Uma classe utilitária (`util.Teclado.java`) é responsável por todo o gerenciamento de entrada do usuário, com tratamento de erros e validações para evitar falhas durante o jogo.
 
 - **⚖️ Sistema de Classes Balanceado:**  
-  Três classes jogáveis — **Berserker**, **Oráculo** e **Caçador** — cada uma com suas próprias vantagens, desvantagens e mecânicas únicas.
+  Três classes jogáveis — **model.Berserker**, **Oráculo** e **Caçador** — cada uma com suas próprias vantagens, desvantagens e mecânicas únicas.
 
 - **🎲 Sistema de Combate por Turnos:**  
   Combates baseados em atributos e rolagem de dados (D6), garantindo imprevisibilidade e estratégia nas batalhas.
@@ -52,14 +52,14 @@ Durante a aventura, o jogador poderá escolher entre **três classes distintas**
 ### 🔧 Compilação
 No diretório raiz do projeto, execute:
 ```bash
-javac -d out/production/rpg-poo src/*.java
 
+javac -d out/production/rpg-poo -sourcepath src src\game\Main.java
 
 ▶️ Execução
 
 Após a compilação, rode o jogo com:
 
-java -cp out/production/rpg-poo Jogo
+java -cp out/production/rpg-poo game.Jogo
 
 
 

@@ -1,11 +1,11 @@
-//Lista de Inimigos (Atributos)
+package model;//Lista de Inimigos (Atributos)
 //
-// Draugr (Inimigo Ato 1):
+// Draugr (model.Inimigo Ato 1):
 // - pontosVida: 40
 // - ataque: 8
 // - defesa: 5
 //
-// Serpente Marinha (Inimigo Ato 2):
+// Serpente Marinha (model.Inimigo Ato 2):
 // - pontosVida: 100
 // - ataque: 12
 // - defesa: 8
@@ -29,7 +29,7 @@ public class Inimigo extends Personagem {
         super(outro);
     }
     
-    // Habilidade do Inimigo
+    // Habilidade do model.Inimigo
     @Override
     public String habilidadeEspecial() {
         int bonusAtaque = 3;

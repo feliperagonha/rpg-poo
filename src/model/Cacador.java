@@ -1,4 +1,4 @@
-// Baseado na classe ranged(arqueiro,atirador, etc...)
+package model;// Baseado na classe ranged(arqueiro,atirador, etc...)
 // Características da classe:
 // - HP: 100
 // - Ataque: 10

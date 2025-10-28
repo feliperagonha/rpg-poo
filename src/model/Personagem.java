@@ -1,7 +1,7 @@
-
+package model;
 /*
  A classe personagem é uma classe abstract impedindo que nao seja possivel ter uma
- instancia direto dessa classe [ex: new Personagem();], sendo possivel instacia apenas as
+ instancia direto dessa classe [ex: new model.Personagem();], sendo possivel instacia apenas as
  subclasse berseker,oraculo,cacador.
  */
 
@@ -36,7 +36,7 @@ public abstract class Personagem implements Cloneable {
     // Construtor de cópia
     public Personagem(Personagem outro)  throws Exception
     {
-        if (outro == null){ throw new Exception("Personagem para cópia ausente"); }
+        if (outro == null){ throw new Exception("model.Personagem para cópia ausente"); }
         this.nome          = outro.nome;
         this.pontosVida    = outro.pontosVida;
         this.pontosVidaMax = outro.pontosVidaMax;
@@ -114,7 +114,7 @@ public abstract class Personagem implements Cloneable {
         return this.getPontosVida() > 0;
     }
 
-    // Método Dano do Personagem
+    // Método Dano do model.Personagem
     public void receberDano(int dano) throws Exception {
         if(dano < 0) throw new Exception("Dano inválido");
         int danoReal = Math.max(0, dano - this.defesa); // Dano - Defesa

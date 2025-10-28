@@ -1,5 +1,6 @@
+package model;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Inventario implements Cloneable{
@@ -89,7 +90,7 @@ public class Inventario implements Cloneable{
             }
         }
 
-        System.out.println("---Inventario---");
+        System.out.println("---model.Inventario---");
         for (Item item : this.itens){
             System.out.println("- " + item.getNome() + " (x" + item.getQuantidade() + ")");
         }

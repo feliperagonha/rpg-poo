@@ -1,4 +1,4 @@
-// Baseada na classe Guerreiro
+package model;// Baseada na classe Guerreiro
 // Características da classe:
 // - HP: 150 (o mais alto entre as classes)
 // - Ataque: 20 (o mais alto entre as classes)
@@ -12,7 +12,7 @@
 public class Berserker extends Personagem {
 
     public Berserker() throws Exception {
-        super("Berserker", 150, 20, 5, (byte)1);
+        super("model.Berserker", 150, 20, 5, (byte)1);
     }
     
     // construtor de cópia

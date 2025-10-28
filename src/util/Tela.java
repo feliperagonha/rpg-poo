@@ -1,3 +1,8 @@
+package util;
+
+import model.Oraculo;
+import model.Personagem;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -106,8 +111,8 @@ public class Tela {
     public static void imprimirMenuPrincipal() {
         limparTela();
         System.out.println("=== A Runa Despertada ===");
-        System.out.println("1. Novo Jogo"             );
-        System.out.println("2. Carregar Jogo"         );
+        System.out.println("1. Novo game.Jogo"             );
+        System.out.println("2. Carregar game.Jogo"         );
         System.out.println("3. Sair"                  );
     }
     public static void imprimirMenuSaves() {
@@ -150,10 +155,10 @@ public class Tela {
 
         if (jogador.getClass() == Oraculo.class) { // Usando getClass()
             System.out.println("2. Usar Habilidade");
-            System.out.println("3. Usar Item");
+            System.out.println("3. Usar model.Item");
             System.out.println("4. Fugir");
         } else {
-            System.out.println("2. Usar Item");
+            System.out.println("2. Usar model.Item");
             System.out.println("3. Fugir");
         }
         System.out.println("-------------------------");
