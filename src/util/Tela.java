@@ -151,25 +151,25 @@ public class Tela {
 
     public static void imprimirMenuBatalha(Personagem jogador) { // Recebe o jogador
         System.out.println("--- O que você faz? ---");
-        System.out.println("1. Ataque Básico");
+        System.out.println("1. Ataque Básico"       );
 
         if (jogador.getClass() == Oraculo.class) { // Usando getClass()
             System.out.println("2. Usar Habilidade");
             System.out.println("3. Usar model.Item");
-            System.out.println("4. Fugir");
+            System.out.println("4. Fugir"          );
         } else {
             System.out.println("2. Usar model.Item");
-            System.out.println("3. Fugir");
+            System.out.println("3. Fugir"          );
         }
-        System.out.println("-------------------------");
-    }
-    //o oraculo é o unico q tem um sub menu so pra ele pq ele é o unico q tem habilidade ativa
-    public static void imprimirMenuOraculo() {
-        System.out.println("--- Habilidades de Oráculo ---");
-        System.out.println("1. Habilidade: Curar"          );
-        System.out.println("2. Habilidade: Amaldiçoar"     );
-        System.out.println("3. Voltar"                     );
         System.out.println("------------------------------");
     }
-
+    //o oraculo é o unico q tem um sub menu so pra ele pq ele é o unico q tem habilidade ativa
+    public static void imprimirMenuOraculo()
+    {
+        System.out.println("--- Habilidades de Oráculo ---");
+        System.out.println("1. Ataque Básico"              );
+        System.out.println("2. Habilidade: Curar"          );
+        System.out.println("3. Habilidade: Amaldiçoar"     );
+        System.out.println("------------------------------");
+    }
 }

@@ -215,17 +215,17 @@ public class Jogo{
                 break;
 
             case 2:
-                Tela.narrar(this.jogador.getNome() + " usa a runa de CURA!");
-                //colocar o metodo para curar do oraculo
-
+                String resultadoCura = ((Oraculo)this.jogador).habilidadeEspecial(1);
+                Tela.narrar(resultadoCura);
+                
                 if (inimigo.estaVivo()) {
                     executarTurno(inimigo, this.jogador);
                 }
                 break;
             case 3:
-                Tela.narrar(this.jogador.getNome() + " usa a runa de AMALDIÇOAR!");
-                // colocar metodo de amaldicoar do oraculo
-
+                ((Oraculo)this.jogador).amaldicoar(inimigo);
+                Tela.narrar(this.jogador.getNome() + " amaldiçoou " + inimigo.getNome() + "! Defesa reduzida.");
+                
                 if (inimigo.estaVivo()) {
                     executarTurno(inimigo, this.jogador);
                 }
@@ -314,8 +314,6 @@ public class Jogo{
             }
             Tela.narrar(atacante.getNome() + " volta ao normal.");
         }
-
-        Tela.narrar(atacante.getNome() + " ataca com " + ataqueBase + " + (" + resultadoDado + " no dado) = " + ataqueTotal + " de força!");
 
     }
 

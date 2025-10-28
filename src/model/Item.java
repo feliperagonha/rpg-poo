@@ -1,6 +1,6 @@
 package model;
 
-public class Item implements  Comparable<Item>{
+public class Item implements Comparable<Item>{
     private String nome;
     private String descricao;
     private String efeito;
@@ -36,24 +36,21 @@ public class Item implements  Comparable<Item>{
         if (obj == this) return true;
         if (obj == null) return false;
         if (obj.getClass() != this.getClass()) return false;
-
+    
         Item outroItem = (Item) obj;
-
-        if (!this.nome.equalsIgnoreCase(outroItem.nome))
-            return false;
-
-        return true;
+        
+        return this.nome.equalsIgnoreCase(outroItem.nome) &&
+               this.efeito.equalsIgnoreCase(outroItem.efeito);
     }
 
 
     @Override
-    public int hashCode(){
-        int retorno = this.nome.hashCode();
-
-        if (retorno < 0) retorno = -retorno;
-
-        return retorno;
-    }
+    public int hashCode() {
+        int ret = 666; 
+        ret = ret * 31 + (nome != null ? nome.hashCode() : 0);
+        ret = ret * 31 + (efeito != null ? efeito.hashCode() : 0);
+        return ret;
+}
 
     @Override
     public int compareTo(Item outroItem) {

@@ -20,12 +20,14 @@ public class Oraculo extends Personagem{
     }
 
     @Override
-    public String habilidadeEspecial() {
+    public String habilidadeEspecial()
+    {
         return "O Oráculo precisa escolher qual habilidade usar no sub-menu.";
     }
 
     @Override
-    public String habilidadeEspecial(int escolha) throws Exception {
+    public String habilidadeEspecial(int escolha) throws Exception
+    {
         switch (escolha) {
             case 1: // Curar
                 this.curar(25);
@@ -36,5 +38,11 @@ public class Oraculo extends Personagem{
             default:
                 return this.getNome() + " decide não usar uma habilidade.";
         }
+    }
+    public void amaldicoar(Personagem alvo) throws Exception
+    {
+        int reducaoDefesa = 5;
+        int novaDefesa = Math.max(0, alvo.getDefesa() - reducaoDefesa);
+        alvo.setDefesa(novaDefesa);
     }
 }
