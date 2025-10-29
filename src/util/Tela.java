@@ -170,6 +170,7 @@ public class Tela {
         System.out.println("1. Ataque Básico"              );
         System.out.println("2. Habilidade: Curar"          );
         System.out.println("3. Habilidade: Amaldiçoar"     );
+        System.out.println("4. Voltar"                     );
         System.out.println("------------------------------");
     }
 }

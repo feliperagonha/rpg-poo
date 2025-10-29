@@ -90,11 +90,15 @@ public class Inventario implements Cloneable{
             }
         }
 
-        System.out.println("---model.Inventario---");
+        System.out.println("---Inventario---");
         for (Item item : this.itens){
             System.out.println("- " + item.getNome() + " (x" + item.getQuantidade() + ")");
         }
         System.out.println("-----------------");
+    }
+
+    public List<Item> getItens() {
+        return this.itens;
     }
 
     @Override

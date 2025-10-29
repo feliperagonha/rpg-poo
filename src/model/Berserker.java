@@ -12,7 +12,7 @@ package model;// Baseada na classe Guerreiro
 public class Berserker extends Personagem {
 
     public Berserker() throws Exception {
-        super("model.Berserker", 150, 20, 5, (byte)1);
+        super("Berserker", 150, 20, 5, (byte)1);
     }
     
     // construtor de cópia

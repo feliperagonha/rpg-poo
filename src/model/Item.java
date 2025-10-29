@@ -60,7 +60,7 @@ public class Item implements Comparable<Item>{
 
     @Override
     public String toString(){
-        return String.format("model.Item{\nNome= '%s'\nQuantidade = %d\nDescrição = '%s'\nEfeito = '%s'}",
+        return String.format("Item{\nNome= '%s'\nQuantidade = %d\nDescrição = '%s'\nEfeito = '%s'}",
                 getNome(),
                 getQuantidade(),
                 getDescricao(),
