@@ -96,12 +96,12 @@ public abstract class Personagem implements Cloneable {
     }
 
 
-    public String habilidadeEspecial() {
+    public String habilidadeEspecial(Personagem alvo) throws Exception {
         return this.getNome() + " não possui uma habilidade especial ativa.";
     }
     //sobrecarga
-    public String habilidadeEspecial(int escolha) throws Exception {
-        return this.getNome() + " não possui múltiplas habilidades.";
+    public String habilidadeEspecial(int escolha, Personagem alvo) throws Exception {
+        return this.habilidadeEspecial(alvo);
     }
 
     public void mostrarInfos()

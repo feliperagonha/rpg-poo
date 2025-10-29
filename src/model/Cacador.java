@@ -20,7 +20,7 @@ public class Cacador extends Personagem{
     }
     
     @Override
-    public String habilidadeEspecial() {
+    public String habilidadeEspecial(Personagem alvo) {
         int bonusAtaque = this.getAtaque();
         try {
             this.setAtaque(this.getAtaque() + bonusAtaque);

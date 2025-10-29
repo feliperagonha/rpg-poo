@@ -12,16 +12,16 @@ package model;// Baseada na classe Guerreiro
 public class Berserker extends Personagem {
 
     public Berserker() throws Exception {
-        super("model.Berserker", 150, 20, 5, (byte)1);
+        super("Berserker", 150, 20, 5, (byte)1);
     }
     
     // construtor de cópia
     public Berserker(Berserker outro) throws Exception {
         super(outro);
     }
-    
+
     @Override
-    public String habilidadeEspecial() {
+    public String habilidadeEspecial(Personagem alvo) throws Exception {
         int bonusAtaque = (int)(this.getAtaque() * 0.5);
         try {
             this.setAtaque(this.getAtaque() + bonusAtaque);

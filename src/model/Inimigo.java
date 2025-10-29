@@ -31,7 +31,7 @@ public class Inimigo extends Personagem {
     
     // Habilidade do model.Inimigo
     @Override
-    public String habilidadeEspecial() {
+    public String habilidadeEspecial(Personagem alvo) {
         int bonusAtaque = 3;
         try {
             this.setAtaque(this.getAtaque() + bonusAtaque);
