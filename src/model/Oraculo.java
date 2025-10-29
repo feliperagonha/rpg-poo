@@ -34,7 +34,7 @@ public class Oraculo extends Personagem{
                 return this.getNome() + " usa a runa de CURA! (HP +25)";
             case 2: // Amaldiçoar
                 // [LÓGICA DA MALDIÇÃO PENDENTE]
-                return this.getNome() + " usa a runa de AMALDIÇOAR! (Defesa do model.Inimigo Reduzida)";
+                return this.getNome() + " usa a runa de AMALDIÇOAR! (Defesa do Inimigo Reduzida)";
             default:
                 return this.getNome() + " decide não usar uma habilidade.";
         }

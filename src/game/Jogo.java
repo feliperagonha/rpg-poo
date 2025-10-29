@@ -150,53 +150,89 @@ public class Jogo{
     }
 
     public void batalhar(Inimigo inimigo) throws Exception {
-        Tela.narrar("Um " + inimigo.getNome() + " selvagem aparece");
-        while(this.jogador.estaVivo() && inimigo.estaVivo()) {
+        Tela.narrar("Um " + inimigo.getNome() + " selvagem aparece!");
+
+        while (this.jogador.estaVivo() && inimigo.estaVivo()) {
+
             Tela.imprimirStatusBatalha(this.jogador, inimigo);
             Tela.imprimirMenuBatalha(this.jogador);
 
             int escolha = -1;
-            try{
+            try {
                 escolha = Teclado.getUmInt();
-            }catch(Exception e){
-                Tela.narrar("Opcao invalida! Tente Novamente");
+            } catch (Exception e) {
+                Tela.narrar("Opção inválida! Tente novamente.");
                 continue;
             }
 
-            switch (escolha){
-                case 1: //atacar
-                    if(this.jogador.getClass() == Oraculo.class){
-                        tratarTurnoOraculo(inimigo);
-                    }else{
-                        tratarTurnoAtaquePadrao(inimigo);
+
+            boolean turnoGasto = false;
+
+            // Mapeia a escolha se não for Oráculo
+            int escolhaMapeada = escolha;
+            if (this.jogador.getClass() != Oraculo.class && escolha > 1) {
+                escolhaMapeada = escolha + 1; // 2->3 (Item), 3->4 (Fugir)
+            }
+
+
+            switch (escolhaMapeada) {
+                case 1: // Ataque Básico
+                    Tela.narrar("Você decide usar um ataque básico!");
+                    tratarTurnoAtaquePadrao(inimigo);
+                    turnoGasto = true;
+                    break;
+
+                case 2: // Usar Habilidade (Só Oráculo chega aqui com escolhaMapeada == 2)
+                    if (this.jogador.getClass() == Oraculo.class) {
+                        // Chama o método que trata o sub-menu.
+                        // Ele retorna TRUE se uma habilidade foi usada, FALSE se escolheu "Voltar".
+                        turnoGasto = tratarTurnoOraculo(inimigo);
+                    } else {
+                        Tela.narrar("Escolha inválida! Você perdeu seu turno.");
+                        turnoGasto = true; // Perdeu o turno
                     }
                     break;
-                case 2:
-                    Tela.narrar("Função 'Usar item' ainda em construção");
-                    executarTurno(inimigo, this.jogador);
+
+                case 3: // Usar Item
+                    Tela.narrar("Função 'Usar Item' ainda em construção...");
+                    // [TAREFA PENDENTE: Lógica de Usar Item]
+                    turnoGasto = true; // Gasta o turno mesmo que falhe (ou mude isso depois)
                     break;
 
-                case 3:
-
-                    Tela.narrar("Função 'Fugir' ainda em construção");
-                    executarTurno(inimigo, this.jogador);
+                case 4: // Fugir
+                    Tela.narrar("Função 'Fugir' ainda em construção...");
+                    // [TAREFA PENDENTE: Lógica de Fuga]
+                    turnoGasto = true; // Gasta o turno mesmo que falhe (ou mude isso depois)
                     break;
 
                 default:
-                    Tela.narrar("Escolha invalida! Vocé perdeu seu turno.");
-                    executarTurno(inimigo, this.jogador);
+                    Tela.narrar("Escolha inválida! Você perdeu seu turno.");
+                    turnoGasto = true; // Perdeu o turno
                     break;
-
             }
+
+            // Turno do Inimigo: Só acontece se o jogador GASTOU o turno
+            // e se o inimigo ainda está vivo.
+            if (turnoGasto && inimigo.estaVivo()) {
+                Tela.narrar("--- Turno do Inimigo ---");
+                // [LÓGICA DE IA DO INIMIGO PENDENTE]
+                tratarTurnoAtaquePadrao(inimigo);
+            }
+            // Se turnoGasto for FALSE (porque o Oráculo escolheu "Voltar"),
+            // o loop while recomeça, mostrando o menu principal novamente.
         }
-        if(this.jogador.estaVivo()){
-            Tela.narrar("Vocé venceu a batalha");
-        }else{
-            Tela.narrar("Voce foi derrotado. Fim de jogo.");
+
+        // Fim da Batalha (igual a antes)
+        if (this.jogador.estaVivo()) {
+            Tela.narrar("Você venceu a batalha!");
+            Tela.esperarEnter();
+        } else {
+            Tela.narrar("Você foi derrotado. Fim de jogo.");
+            Tela.esperarEnter();
         }
     }
 
-    public void tratarTurnoOraculo(Inimigo inimigo) throws Exception {
+    public boolean tratarTurnoOraculo(Inimigo inimigo) throws Exception {
         Tela.imprimirMenuOraculo();
         int escolhaMagia = -1;
         try{
@@ -207,42 +243,19 @@ public class Jogo{
 
         switch (escolhaMagia) {
             case 1:
-                Tela.narrar(this.jogador.getNome() + " usa seu cajado de esmeralda para um ataque básico");
-                executarTurno(this.jogador, inimigo);
-                if (inimigo.estaVivo()) {
-                    executarTurno(inimigo, this.jogador);
-                }
-                break;
-
-            case 2:
-                String resultadoCura = ((Oraculo)this.jogador).habilidadeEspecial(1);
-                Tela.narrar(resultadoCura);
-                
-                if (inimigo.estaVivo()) {
-                    executarTurno(inimigo, this.jogador);
-                }
-                break;
-            case 3:
-                ((Oraculo)this.jogador).amaldicoar(inimigo);
-                Tela.narrar(this.jogador.getNome() + " amaldiçoou " + inimigo.getNome() + "! Defesa reduzida.");
-                
-                if (inimigo.estaVivo()) {
-                    executarTurno(inimigo, this.jogador);
-                }
-                break;
-
-            case 4:
+                Tela.narrar(this.jogador.habilidadeEspecial(1)); // Chama habilidade 1 (Curar)
+                return true; // Habilidade usada, turno GASTO
+            case 2: // Habilidade: Amaldiçoar
+                Tela.narrar(this.jogador.habilidadeEspecial(2)); // Chama habilidade 2 (Amaldiçoar)
+                // [LÓGICA DA MALDIÇÃO PENDENTE NO ORACULO.JAVA]
+                return true; // Habilidade usada, turno GASTO
+            case 3: // Voltar
                 Tela.narrar("Você decide esperar...");
-                // é para voltar para o menu, caso ele decida q ao inves de atacar vai usar um item do inventario
-                break;
-
+                return true; // Escolheu voltar, turno NÃO GASTO
             default:
                 Tela.narrar("Opção de magia inválida! Você perdeu seu turno.");
-                executarTurno(inimigo, this.jogador);
-                break;
-
+                return true; // Opção inválida, turno GASTO
         }
-
     }
 
     public void tratarTurnoAtaquePadrao(Inimigo inimigo) throws Exception {
