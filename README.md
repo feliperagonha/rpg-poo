@@ -59,7 +59,7 @@ javac -d out/production/rpg-poo -sourcepath src src\game\Main.java
 
 Após a compilação, rode o jogo com:
 
-java -cp out/production/rpg-poo game.Jogo
+java -cp out/production/rpg-poo game.Main
 
 
 
