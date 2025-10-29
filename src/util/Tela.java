@@ -167,16 +167,10 @@ public class Tela {
     public static void imprimirMenuOraculo()
     {
         System.out.println("--- Habilidades de Oráculo ---");
-<<<<<<< HEAD
+
         System.out.println("1. Habilidade: Curar");
         System.out.println("2. Habilidade: Amaldiçoar");
         System.out.println("3. Voltar");
-=======
-        System.out.println("1. Ataque Básico"              );
-        System.out.println("2. Habilidade: Curar"          );
-        System.out.println("3. Habilidade: Amaldiçoar"     );
-        System.out.println("4. Voltar"                     );
->>>>>>> ebbde2650b5247b63777a44f3fa00f6e7c156942
         System.out.println("------------------------------");
     }
 }
