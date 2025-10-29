@@ -544,33 +544,34 @@ public class Jogo{
     public boolean tratarTurnoOraculo(Inimigo inimigo) throws Exception {
         Tela.imprimirMenuOraculo();
         int escolhaMagia = -1;
-        try{
+        
+        try {
             escolhaMagia = Teclado.getUmInt();
-        }catch(Exception e){
+        } catch (Exception e) {
             escolhaMagia = -1;
         }
-        boolean habilidadeUsada = false;
+        
         switch (escolhaMagia) {
-            case 1:
-                Tela.narrar(this.jogador.habilidadeEspecial(1, null)); // Chama habilidade 1 (Curar)
-                habilidadeUsada = true;
-                break;
-            case 2: // Habilidade: Amaldiçoar
-                Tela.narrar(this.jogador.habilidadeEspecial(2, inimigo)); // Chama habilidade 2 (Amaldiçoar)
-                habilidadeUsada = true;
-                break;
+            case 1: // Curar
+                Tela.narrar(this.jogador.habilidadeEspecial(1, null));
+                Tela.esperarEnter();
+                return true; 
+                
+            case 2: // Amaldiçoar
+                Tela.narrar(this.jogador.habilidadeEspecial(2, inimigo));
+                Tela.esperarEnter();
+                return true; 
+                
             case 3: // Voltar
                 Tela.narrar("Você decide esperar...");
-                return false; // Escolheu voltar, turno NÃO GASTO
+                return false; 
+                
             default:
                 Tela.narrar("Opção de magia inválida! Você perdeu seu turno.");
-                return true; // Opção inválida, turno GASTO
+                return true; 
         }
-        if (habilidadeUsada && inimigo.estaVivo()) {
-            tratarTurnoAtaquePadrao(inimigo); // Inimigo contra-ataca
-        }
-        return habilidadeUsada;
     }
+    
 
     // Método para usar item do inventário durante a batalha
     /*
