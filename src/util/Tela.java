@@ -111,8 +111,8 @@ public class Tela {
     public static void imprimirMenuPrincipal() {
         limparTela();
         System.out.println("=== A Runa Despertada ===");
-        System.out.println("1. Novo game.Jogo"             );
-        System.out.println("2. Carregar game.Jogo"         );
+        System.out.println("1. Novo Jogo"             );
+        System.out.println("2. Carregar Jogo"         );
         System.out.println("3. Sair"                  );
     }
     public static void imprimirMenuSaves() {

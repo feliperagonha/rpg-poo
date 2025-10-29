@@ -50,7 +50,7 @@ public class Item implements Comparable<Item>{
         ret = ret * 31 + (nome != null ? nome.hashCode() : 0);
         ret = ret * 31 + (efeito != null ? efeito.hashCode() : 0);
         return ret;
-}
+    }
 
     @Override
     public int compareTo(Item outroItem) {
