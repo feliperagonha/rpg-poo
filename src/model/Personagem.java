@@ -123,6 +123,16 @@ public abstract class Personagem implements Cloneable {
             this.pontosVida = 0;
         }
     }
+
+    // Método para dano direto que IGNORA a defesa (usado em armadilhas/eventos)
+    public void receberDanoDireto(int dano) throws Exception {
+        if(dano < 0) throw new Exception("Dano inválido");
+        this.pontosVida -= dano;
+        if (this.pontosVida < 0) {
+            this.pontosVida = 0;
+        }
+    }
+
     // Método Curar
     public void curar(int quantidade) throws Exception {
         if (quantidade < 0) throw new Exception("Quantidade de cura inválida.");

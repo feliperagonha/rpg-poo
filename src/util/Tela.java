@@ -156,10 +156,8 @@ public class Tela {
         if (jogador.getClass() == Oraculo.class) { // Usando getClass()
             System.out.println("2. Usar Habilidade");
             System.out.println("3. Usar Item");
-            System.out.println("4. Fugir"          );
         } else {
             System.out.println("2. Usar Item");
-            System.out.println("3. Fugir"          );
         }
         System.out.println("------------------------------");
     }
