@@ -28,15 +28,20 @@ public class Oraculo extends Personagem{
     public String habilidadeEspecial(int escolha, Personagem alvo) throws Exception {
         switch (escolha) {
             case 1: // Curar (não precisa de alvo)
+                if (this.getPontosVida() >= this.getPontosVidaMax()) {
+                    return this.getNome() + " já está com a vida máxima!";
+                }
                 this.curar(25);
-                return this.getNome() + " usa a runa de CURA! (HP +25)";
+                return this.getNome() + " usa a runa de CURA! (HP +25 -> " + this.getPontosVida() + "/" + this.getPontosVidaMax() + ")";
             case 2: // Amaldiçoar (PRECISA de alvo)
                 if (alvo == null) {
                     return this.getNome() + " tentou amaldiçoar, mas não havia alvo!";
                 }
+                if (alvo.getDefesa() <= 0) {
+                    return alvo.getNome() + " já está com a defesa mínima! A maldição falha.";
+                }
                 this.amaldicoar(alvo);
-                return this.getNome() + " usa a runa de AMALDIÇOAR sobre " + alvo.getNome() + "! (Defesa Reduzida)";
-
+                return this.getNome() + " usa a runa de AMALDIÇOAR sobre " + alvo.getNome() + "! (Defesa Reduzida para " + alvo.getDefesa() + ")";
             default:
                 return this.getNome() + " decide não usar uma habilidade.";
         }
@@ -47,9 +52,6 @@ public class Oraculo extends Personagem{
         int novaDefesa = Math.max(0, alvo.getDefesa() - reducaoDefesa);
         alvo.setDefesa(novaDefesa);
     }
-    public void curar(int ptosDeCura){
-        int novaVida = getPontosVida() + ptosDeCura;
-        setPontosVida(novaVida);
-    }
+
 
 }

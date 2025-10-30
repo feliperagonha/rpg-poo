@@ -355,13 +355,12 @@ public class Jogo{
         Tela.esperarEnter();
     }
 }
-
     public void batalhar(Inimigo inimigo) throws Exception {
         Tela.narrar("Um " + inimigo.getNome() + " selvagem aparece!");
         while (this.jogador.estaVivo() && inimigo.estaVivo()) {
             Tela.imprimirStatusBatalha(this.jogador, inimigo);
             Tela.imprimirMenuBatalha(this.jogador);
-            
+
             int escolha = -1;
             try {
                 escolha = Teclado.getUmInt();
@@ -371,40 +370,47 @@ public class Jogo{
             }
 
 
-            boolean turnoGasto = false;
+            boolean turnoGasto = true;
 
-            // Mapeia a escolha se não for Oráculo
+
             int escolhaMapeada = escolha;
             if (this.jogador.getClass() != Oraculo.class && escolha > 1) {
                 escolhaMapeada = escolha + 1; // 2->3 (Item), 3->4 (Fugir)
             }
 
-
+            // --- Ações do Jogador E Contra-Ataque do Inimigo ---
             switch (escolhaMapeada) {
                 case 1: // Ataque Básico
                     Tela.narrar("Você decide usar um ataque básico!");
-                    Tela.esperarEnter();
-                    Tela.limparTela();
+                    // Este método JÁ FAZ o jogador atacar E o inimigo contra-atacar
                     tratarTurnoAtaquePadrao(inimigo);
-                    turnoGasto = true;
+                    // Turno foi gasto
                     break;
 
-                case 2: // Usar Habilidade (Só Oráculo chega aqui com escolhaMapeada == 2)
+                case 2: // Usar Habilidade (Só Oráculo)
                     if (this.jogador.getClass() == Oraculo.class) {
-                        Tela.esperarEnter();
-                        Tela.limparTela();
+                        // tratarTurnoOraculo executa a habilidade E JÁ FAZ o inimigo contra-atacar,
+                        // e retorna false SÓ se escolheu "Voltar".
                         turnoGasto = tratarTurnoOraculo(inimigo);
                     } else {
                         Tela.narrar("Escolha inválida! Você perdeu seu turno.");
-                        Tela.esperarEnter();
-                        Tela.limparTela();
-                        turnoGasto = true; // Perdeu o turno
+                        // Precisa do ataque inimigo aqui se perdeu o turno
+                        executarTurno(inimigo, this.jogador); // Renomeado
                     }
                     break;
 
                 case 3: // Usar Item
                     boolean itemFoiUsado = usarItem();
-                    turnoGasto = itemFoiUsado;
+                    if (itemFoiUsado) {
+                        // Se usou item, inimigo contra-ataca
+                        if (inimigo.estaVivo()) {
+                            Tela.narrar("--- Turno do Inimigo ---");
+                            executarTurno(inimigo, this.jogador); // Renomeado
+                        }
+                    } else {
+                        // Se cancelou, turno NÃO foi gasto
+                        turnoGasto = false;
+                    }
                     break;
 
                 case 4: // Fugir
@@ -412,17 +418,25 @@ public class Jogo{
                     if (fugiu) {
                         return; // Sai da batalha
                     } else {
-                        turnoGasto = true;
+                        // Se falhou em fugir, inimigo contra-ataca
+                        if (inimigo.estaVivo()) {
+                            Tela.narrar("--- Turno do Inimigo ---");
+                            executarTurno(inimigo, this.jogador); // Renomeado
+                        }
                     }
+                    // Turno foi gasto (tentativa de fuga)
                     break;
                 default:
                     Tela.narrar("Escolha inválida! Você perdeu seu turno.");
-                    turnoGasto = true; // Perdeu o turno
+                    // Precisa do ataque inimigo aqui se perdeu o turno
+                    executarTurno(inimigo, this.jogador); // Renomeado
                     break;
             }
 
         }
-        if(this.jogador.estaVivo()){
+
+
+        if (this.jogador.estaVivo()) {
             Tela.narrar("\n*** VITÓRIA! ***");
             Tela.narrar("Você derrotou o " + inimigo.getNome() + "!");
             Tela.esperarEnter();
@@ -434,35 +448,49 @@ public class Jogo{
     }
 
 
-    public boolean tratarTurnoOraculo(Inimigo inimigo) throws Exception {
+
+    private boolean tratarTurnoOraculo(Inimigo inimigo) throws Exception {
         Tela.imprimirMenuOraculo();
         int escolhaMagia = -1;
-        try{
+        try {
             escolhaMagia = Teclado.getUmInt();
-        }catch(Exception e){
+        } catch (Exception e) {
             escolhaMagia = -1;
         }
-        boolean habilidadeUsada = false;
+
+        String narracaoResultado = "";
+        boolean habilidadeExecutada = false;
         switch (escolhaMagia) {
-            case 1:
-                Tela.narrar(this.jogador.habilidadeEspecial(1, null)); // Chama habilidade 1 (Curar)
-                habilidadeUsada = true;
-                break;
+            case 1: // Habilidade: Curar
+                narracaoResultado = this.jogador.habilidadeEspecial(1, null);
+                Tela.narrar(narracaoResultado);
+                habilidadeExecutada = true;
+                break; // Sai do switch
+
             case 2: // Habilidade: Amaldiçoar
-                Tela.narrar(this.jogador.habilidadeEspecial(2, inimigo)); // Chama habilidade 2 (Amaldiçoar)
-                habilidadeUsada = true;
+                narracaoResultado = this.jogador.habilidadeEspecial(2, inimigo);
+                Tela.narrar(narracaoResultado);
+                habilidadeExecutada = true;
                 break;
-            case 3: // Voltar
+
+            case 3:
                 Tela.narrar("Você decide esperar...");
-                return false; // Escolheu voltar, turno NÃO GASTO
+                return false;
+
             default:
                 Tela.narrar("Opção de magia inválida! Você perdeu seu turno.");
-                return true; // Opção inválida, turno GASTO
+                habilidadeExecutada = true; // Perdeu o turno, mas inimigo ataca
+                break; // Sai do switch
         }
-        if (habilidadeUsada && inimigo.estaVivo()) {
-            tratarTurnoAtaquePadrao(inimigo); // Inimigo contra-ataca
+
+
+        if (habilidadeExecutada && inimigo.estaVivo()) {
+            Tela.narrar("--- Turno do Inimigo ---");
+            executarTurno(inimigo, this.jogador); // Renomeado
         }
-        return habilidadeUsada;
+
+        return true;
+
     }
 
     // Método para usar item do inventário durante a batalha
@@ -535,17 +563,18 @@ public class Jogo{
     }
 
     public void tratarTurnoAtaquePadrao(Inimigo inimigo) throws Exception {
-        if(this.jogador.getClass() == Berserker.class){
-            //serve para q o inimigo sempre ataque primeiro do q o berseker
+        if(this.jogador.getClass() == Berserker.class){ // LENTO
+            // Inimigo ataca primeiro
             executarTurno(inimigo, this.jogador);
             if (this.jogador.estaVivo()){
+                // Jogador (Berserker) ataca depois
                 executarTurno(this.jogador, inimigo);
             }
-
-        }else{
-            //se no metodo q chama esse ja verificamos se ele é ou nao oraculo e aqui ja verificamos se ele é berseker entao so sobra o cacador;
+        } else { // RÁPIDO (Caçador/Oráculo no Ataque Básico)
+            // Jogador ataca primeiro
             executarTurno(this.jogador, inimigo);
             if (inimigo.estaVivo()) {
+                // Inimigo ataca depois
                 executarTurno(inimigo, this.jogador);
             }
         }
