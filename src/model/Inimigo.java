@@ -7,13 +7,13 @@ package model;//Lista de Inimigos (Atributos)
 //
 // Serpente Marinha (model.Inimigo Ato 2):
 // - pontosVida: 100
-// - ataque: 12
+// - ataque: 11
 // - defesa: 8
 //
 // Jarl, Líder dos Lobos de Gelo (Chefe Final):
-// - pontosVida: 200
-// - Ataque: 15
-// - Defesa: 10
+// - pontosVida: 150
+// - Ataque: 14
+// - Defesa: 9
 //
 // 
 
@@ -52,7 +52,7 @@ public class Inimigo extends Personagem {
     }
 
     public static Inimigo criarJarl() throws Exception {
-        Inimigo jarl = new Inimigo("Jarl dos Lobos de Gelo", 200, 15, 10, (byte)3);
+        Inimigo jarl = new Inimigo("Jarl dos Lobos de Gelo", 150, 14, 9, (byte)3);
         return jarl;
     }
 }
