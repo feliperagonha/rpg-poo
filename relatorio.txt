@@ -1,0 +1,71 @@
+ALUNO: FELIPE RAGONHA
+Algumas das Contribuições no Projeto:
+1. Classe Oraculo.java:
+- Método amaldiçoar(Personagem alvo)Desenvolvimento da classe abstrata Personagem.java com todos os atributos (nome, pontosVida, pontosVidaMax, ataque, defesa, nivel, inventario) e métodos essenciais: toString(), equals(), hashCode(), clone(), construtores (padrão e de cópia), receberDano(), curar(), estaVivo(), mostrarInfos().
+- Ajustei a lógica de combate específica para a classe Oráculo, garantindo que suas habilidades (curar e amaldiçoar), pois eu e bruno jogamos bastante para que ficasse sem bugs
+
+2. Classe Jogo.java - Sistema de Combate e Narrativa:
+Método tratarTurnoOraculo() 
+menu de habilidades (ataque, curar, amaldiçoar, voltar).
+Método usarItem(): Desenvolvi a funcionalidade completa de uso de itens durante o combate, incluindo listagem do inventário, seleção do item, aplicação dos efeitos (cura ou buff) e remoção/decremento da quantidade.
+Método iniciarJornada(): Implementei a estrutura narrativa completa dos três atos da história viking (Ato I: Inverno Sem Fim, Ato II: Mar das Serpentes, Ato III: Chegada em Thule), incluindo decisões do jogador, criação dos inimigos específicos e progressão linear da narrativa.
+Método fugir(): opção de fugir com chance de falha conforme o requisito do trabalho.
+Método batalhar()
+
+3. Refinamento e Métodos obrigatórios na Personagem.java e Jogo.java
+Integração das classes herdadas (subclasses) - Sendo Cacador, Inimigo, Berserker, Oraculo etc.
+Ajustei algumas mensagens da história
+Método Hashcode Personagem.java
+Método compareTo
+Construtor e Construtor de cópia
+
+4. Opções na história como a armadilha na caverna (morcegos)
+- Chance de falha ao escolher a opção fugir.
+- Implementação dos Ato1 e Ato2 
+
+5. Criação dos métodos darRecompensaArmadilha() e darRecompensaBatalha()
+A ideia das poções ao ganhar a batalha pois assim que acabar a batalha tera o método darRecompensaBatalha()
+Implementação dos atos na história 
+
+Autoavaliação:
+Considero que contribuí de forma significativa para o projeto, especialmente no desenvolvimento da lógica de jogo e narrativa. 
+Implementei funcionalidades complexas como o sistema de itens, mecânica de fuga e toda a estrutura narrativa dos três atos. 
+Trabalhei em colaboração constante com o Bruno, integrando minhas implementações com as classes base que ele desenvolveu. 
+Este projeto foi essencial para consolidar nossos conhecimentos de Programação Orientada a Objetos. 
+Eu (Felipe) e o Bruno trabalhamos de forma totalmente colaborativa, com distribuição justa de responsabilidades e apoio mútuo constante, resultando em uma parceria 100% efetiva onde nós se dedicamos igualmente para o sucesso do trabalho.
+Nota: 9,0
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ALUNO: BRUNO CESAR 
+Algumas das Contribuições no Projeto:
+1. Idealização do projeto, história etc.
+Fui responsável pela história com descrição das classes de heróis (Berserker, Oráculo, Caçador)
+Inimigos (Draugr, Serpente Marinha, Jarl dos Lobos de Gelo)
+
+2. Classe abstrata Personagem.java com todos os atributos (nome, pontosVida, pontosVidaMax, ataque, defesa, nivel, inventario) 
+e métodos essenciais: toString(), equals(), curar(), estaVivo(), mostrarInfos() com o toString
+
+3. Responsável pela digitalização da história no terminal, organização em pastas e arquivos.
+Implementei pausas com "Enter" para melhorar a experiência do usuário.
+
+4. Inventario.java com métodos adicionarItem(), removerItem(), listarItens(), clone() para cópia independente, e construtores (padrão e de cópia).
+
+5. Jogo.java
+-ataqueOriginal
+-defesaOriginal
+serve para salvarStatsOriginais()
+resetarStatsAposBatalha()
+Assim que a batalha se encerra a poção utiliza perde o efeito.
+executarTurno()
+Implementação do método tratarTurnoAtaquePadrao()
+
+6. Desenvolvimento completo da classe Tela.java com todos os métodos de apresentação
+narrar(), imprimirStatusBatalha(), imprimirMenuDeBatalha(), imprimirMenuOraculo(), imprimirHistoria(), imprimirInventario()
+
+Autoavaliação:
+Contribuí de forma fundamental na construção da arquitetura completa do projeto, 
+desde a idealização da história viking até a implementação de todas as classes base e sistemas essenciais (personagens, combate, itens, inventário). 
+Garanti que 100% dos requisitos obrigatórios do TrabalhoRPG.pdf fossem atendidos, incluindo todos os métodos exigidos 
+(toString, equals, hashCode, clone, compareTo, construtores de cópia). O trabalho foi desenvolvido em dupla de forma extremamente colaborativa com o Felipe, 
+onde minhas implementações da arquitetura base permitiram que ele desenvolvesse a lógica de jogo, narrativa e funcionalidades de interação.
+Eu e Felipe organizamos o código da mesma maneira ensinada em aula seguindo as melhores práticas da linguagem Java
+
