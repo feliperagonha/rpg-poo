@@ -3,14 +3,9 @@ package util;
 import model.Oraculo;
 import model.Personagem;
 
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sound.sampled.*;
@@ -147,11 +142,28 @@ public class Tela {
     }
 
     public static void imprimirStatusBatalha(Personagem jogador, Personagem inimigo) {
-        System.out.println("----------------------------------------");
-        System.out.printf("| %s: %d HP    vs    %s: %d HP |\n",
-                jogador.getNome(), jogador.getPontosVida()           ,
-                inimigo.getNome(), inimigo.getPontosVida()             );
-        System.out.println("----------------------------------------");
+        System.out.println("----------------------------------");
+        // Formato: | NOME: HP/HPMax (ATK:X|DEF:X) vs NOME: HP/HPMax (ATK:X|DEF:X) |
+        System.out.printf("| %s: %d|%d HP  vs  %s: %d|%d HP |\n" +
+                        "(ATK:%d|DEF:%d)      (ATK:%d|DEF:%d)",
+
+                // Variáveis da Linha 1
+                jogador.getNome(),          // 1. %s
+                jogador.getPontosVida(),    // 2. %d
+                jogador.getPontosVidaMax(), // 3. %d
+                inimigo.getNome(),          // 4. %s (CORRIGIDO)
+                inimigo.getPontosVida(),    // 5. %d (CORRIGIDO)
+                inimigo.getPontosVidaMax(), // 6. %d (CORRIGIDO)
+
+                // Variáveis da Linha 2
+                jogador.getAtaque(),        // 7. %d (CORRIGIDO)
+                jogador.getDefesa(),        // 8. %d (CORRIGIDO)
+                inimigo.getAtaque(),        // 9. %d (CORRIGIDO)
+                inimigo.getDefesa()         // 10. %d (CORRIGIDO)
+        );
+        // Você não tem um \n no final, então vou adicionar um
+        System.out.println();
+        System.out.println("----------------------------------");
     }
 
 

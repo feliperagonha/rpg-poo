@@ -9,8 +9,8 @@ import java.io.File;
 
 import model.*;
 import util.*;
-import java.util.List;        
-import java.util.ArrayList;   
+import java.util.List;
+import java.util.ArrayList;
 
 
 public class Jogo{
@@ -185,7 +185,18 @@ public class Jogo{
                 break;
         }
     }
-    
+
+    private void avancarParaAto(byte proximoAto) throws Exception {
+        this.jogador.setNivel(proximoAto);
+        salvarCheckpoint();
+
+        if (proximoAto == 2) {
+            ato2();
+        } else if (proximoAto == 3) {
+            ato3();
+        }
+    }
+
     // ========== ATO I: O INVERNO SEM FIM ==========
     private void ato1() throws Exception {
         this.jogador.setNivel((byte)1);
@@ -204,11 +215,11 @@ public class Jogo{
         while (escolha != 1 && escolha != 2) {
             Tela.limparTela();
             Tela.imprimirArquivoTxt("historia/ato1/decisao_menu.txt");
-            
+
             try {
                 Tela.narrar("Sua escolha:");
                 escolha = Teclado.getUmInt();
-                
+
                 if (escolha == 1) {
                     caminhoSeguroAto1();
                 } else if (escolha == 2) {
@@ -230,18 +241,15 @@ public class Jogo{
         Tela.limparTela();
         Tela.imprimirArquivoTxt("historia/ato1/caminho_seguro.txt");
         Tela.esperarEnter();
-        
+
         Inimigo draugr = new Inimigo("Draugr", 40, 8, 5, (byte)1);
         batalhar(draugr);
-        
+
         if (jogador.estaVivo()) {
             darRecompensaBatalha(); // da a recompensa
             // tentar implementar soma do nivel do usuário, aumenta o nivel, dano e defesa em 20%
             Tela.narrar("Você derrotou os Draugr e segue viagem...\n");
-            this.jogador.setNivel((byte)2); // <-- ATUALIZA O NÍVEL
-            salvarCheckpoint();             // <-- SALVA O CHECKPOINT (ATO 2)
-
-            ato2();
+            avancarParaAto((byte)2);//atualiza o nivel e avanca para o proximo ato
         }
     }
 
@@ -250,76 +258,73 @@ public class Jogo{
         Tela.limparTela();
         Tela.imprimirArquivoTxt("historia/ato1/caminho_arriscado_intro.txt");
         Tela.esperarEnter();
-        
+
         Tela.imprimirArquivoTxt("historia/ato1/caminho_arriscado_perigo.txt");
 
         int escolhaArmadilha = -1;
         while (escolhaArmadilha != 1 && escolhaArmadilha != 2) {
             Tela.imprimirArquivoTxt("historia/ato1/armadilha_decisao_menu.txt");
-            
+
             try {
                 Tela.narrar("Sua escolha:");
                 escolhaArmadilha = Teclado.getUmInt();
-                
+
                 if (escolhaArmadilha == 1) {
                     // TENTAR PASSAR
                     Tela.narrar("\n🎲 Rolando dados...");
                     int resultado = Dado.rolar(20);
                     Tela.narrar("Você tirou: " + resultado + " (necessário > 11 para conseguir se livrar dos morcegos.)\n");
                     Tela.esperarEnter();
-                    
+
                     if (resultado >= 11) {
                         // SUCESSO - dano leve
                         Tela.imprimirArquivoTxt("historia/ato1/armadilha_sucesso.txt");
                         darRecompensaArmadilha(); // DA 2 POÇÕES ALEATÓRIAS
-                        
+
                         int dano = 15;
                         int defesaAtual = jogador.getDefesa();
                         jogador.receberDano(dano + defesaAtual); // Dano direto ignorando defesa
-                        
+
                         Tela.narrar("Você sofreu " + dano + " de dano pelas mordidas!");
                         Tela.narrar("HP atual: " + jogador.getPontosVida() + "/" + jogador.getPontosVidaMax() + "\n");
                         Tela.esperarEnter();
-                        
+
                         if (jogador.estaVivo()) {
                             Tela.narrar("Você atravessa a caverna e sai do outro lado...");
                             Tela.narrar("📦 Você encontrou um baú escondido!");
                             Tela.narrar("Ganhou: Tônico Revigorante (+2 na vida máxima)!\n");
-                            
-                            Item tonico = new Item("Tônico Revigorante", "Aumenta a resistência", "+2 HP Max", (short)1);
+
+                            Item tonico = new Item("Tônico Revigorante", "Aumenta a resistência", "+2 HP Max", (short)1,(short) 2);
                             jogador.getInventario().adicionarItem(tonico);
                             jogador.setPontosVidaMax(jogador.getPontosVidaMax() + 2);
-                            this.jogador.setNivel((byte)2); // <-- ATUALIZA O NÍVEL
-                            salvarCheckpoint();             // <-- SALVA O CHECKPOINT (ATO 2)
-
-                            ato2();
+                            avancarParaAto((byte)2);//atualiza o nivel e avanca para o proximo ato
                         }
-                        
+
                     } else {
                         // FALHA - dano pesado
                         Tela.imprimirArquivoTxt("historia/ato1/armadilha_falha.txt");
-                        
+
                         int dano = jogador.getPontosVidaMax();
                         int defesaAtual = jogador.getDefesa();
                         jogador.receberDano(dano + defesaAtual); // Dano direto
-                        
+
                         Tela.narrar("Você sofreu " + dano + " de dano!");
                         Tela.narrar("HP atual: " + jogador.getPontosVida() + "/" + jogador.getPontosVidaMax() + "\n");
                         Tela.esperarEnter();
-                        
+
                         if (!jogador.estaVivo()) {
                             Tela.narrar("💀 Você foi devorado pelos morcegos... FIM DE JOGO");
                             return;
                         }
-                        
+
                         Tela.narrar("Gravemente ferido, você cambaleia para fora da caverna.");
                         Tela.narrar("Você precisa se recuperar antes de continuar...\n");
                         Tela.esperarEnter();
-                        
+
                         // Vai para o ato 2 enfraquecido
                         ato2();
                     }
-                    
+
                 } else if (escolhaArmadilha == 2) {
                     // FUGIR - volta para o caminho seguro
                     Tela.imprimirArquivoTxt("historia/ato1/armadilha_fugir.txt");
@@ -337,7 +342,7 @@ public class Jogo{
         }
     }
 
-    
+
     // ========== ATO II: O MAR DAS SERPENTES ==========
     private void ato2() throws Exception {
         Tela.limparTela();
@@ -345,17 +350,17 @@ public class Jogo{
         salvarCheckpoint();
         decisaoAto2();
     }
-    
+
     private void decisaoAto2() throws Exception {
         int escolha = -1;
         while (escolha != 1 && escolha != 2) {
             Tela.limparTela();
             Tela.imprimirArquivoTxt("historia/ato2/decisao_menu.txt");
-            
+
             try {
                 Tela.narrar("Sua escolha:");
                 escolha = Teclado.getUmInt();
-                
+
                 if (escolha == 1) {
                     caminhoArriscadoAto2();
                 } else if (escolha == 2) {
@@ -371,50 +376,48 @@ public class Jogo{
             }
         }
     }
-    
+
     // CAMINHO 1: Investigar destroços (ARRISCADO - batalha + recompensa)
     private void caminhoArriscadoAto2() throws Exception {
         Tela.limparTela();
         Tela.imprimirArquivoTxt("historia/ato2/caminho_arriscado.txt");
         Tela.esperarEnter();
-        
+
         Inimigo serpenteMarinha = new Inimigo("Serpente Marinha", 100, 12, 8, (byte)2);
         batalhar(serpenteMarinha);
-        
+
         if (jogador.estaVivo()) {
             Tela.narrar("Após derrotar a serpente, você explora os destroços.");
             darRecompensaBatalha();
-           
+
 
             Tela.narrar("Você segue em frente...\n");
-            this.jogador.setNivel((byte)3); // <-- ATUALIZA O NÍVEL
-            salvarCheckpoint();             // <-- SALVA O CHECKPOINT (ATO 3)
-            ato3();
+            avancarParaAto((byte)3);//atualiza o nivel e avanca para o proximo ato
         }
     }
-    
+
+
+
     // CAMINHO 2: Contornar a área (SEGURO - penalidade leve)
     private void caminhoSeguroAto2() throws Exception {
         Tela.limparTela();
         Tela.imprimirArquivoTxt("historia/ato2/caminho_seguro.txt");
-        
+
         int danoExaustao = 15;
         jogador.receberDanoDireto(danoExaustao);
         Tela.narrar("Você sofreu " + danoExaustao + " de dano pela exaustão!");
         Tela.narrar("HP atual: " + jogador.getPontosVida() + "/" + jogador.getPontosVidaMax() + "\n");
         Tela.esperarEnter();
-        
+
         if (!jogador.estaVivo()) {
             Tela.narrar("💀 A exaustão foi demais... FIM DE JOGO");
             return;
         }
-        
+
         Tela.narrar("A viagem se torna mais demorada, mas vocês seguem...\n");
-        this.jogador.setNivel((byte)3); // <-- ATUALIZA O NÍVEL
-        salvarCheckpoint();             // <-- SALVA O CHECKPOINT (ATO 3)
-        ato3();
+        avancarParaAto((byte)3);//atualiza o nivel e avanca para o proximo ato
     }
-    
+
     // ========== ATO III: A CHEGADA EM THULE ==========
     private void ato3() throws Exception {
         Tela.limparTela();
@@ -422,7 +425,7 @@ public class Jogo{
         salvarCheckpoint();
         enfrentarBossFinal();
     }
-    
+
     private void enfrentarBossFinal() throws Exception {
         Tela.limparTela();
         Tela.imprimirArquivoTxt("historia/ato3/batalha_final_intro.txt");
@@ -433,7 +436,7 @@ public class Jogo{
         batalhar(jarl);
 
 
-        
+
         if (jogador.estaVivo()) {
             // VITÓRIA
             Tela.limparTela();
@@ -546,7 +549,7 @@ public class Jogo{
         } catch (Exception e) {
             escolhaMagia = -1;
         }
-        
+
         String narracaoResultado = "";
         boolean habilidadeExecutada = false;
         switch (escolhaMagia) {
@@ -578,15 +581,14 @@ public class Jogo{
         }
         return true;
     }
-    
 
-    // Método para usar item do inventário durante a batalha
+
 
     // Método para dar 1 poção aleatória (caminho seguro - após vencer batalha)
-    private void darRecompensaBatalha() {
+    private void darRecompensaBatalha() throws Exception {
         int tipo = Dado.rolar(3); // 1, 2 ou 3
         Item pocao = criarPocaoAleatoria(tipo);
-        
+
         Tela.narrar("📦 Você encontrou: " + pocao.getNome() + "!");
         Tela.narrar("   " + pocao.getDescricao());
         jogador.getInventario().adicionarItem(pocao);
@@ -594,43 +596,43 @@ public class Jogo{
     }
 
     // Método para dar 2 poções aleatórias (caminho arriscado - sucesso na armadilha)
-    private void darRecompensaArmadilha() {
+    private void darRecompensaArmadilha() throws Exception {
         Tela.narrar("📦 Você encontrou 2 poções mágicas!\n");
-        
+
         // Primeira poção
         int tipo1 = Dado.rolar(3);
         Item pocao1 = criarPocaoAleatoria(tipo1);
         Tela.narrar("   1) " + pocao1.getNome() + " - " + pocao1.getDescricao());
         jogador.getInventario().adicionarItem(pocao1);
-        
+
         // Segunda poção (pode ser igual)
         int tipo2 = Dado.rolar(3);
         Item pocao2 = criarPocaoAleatoria(tipo2);
         Tela.narrar("   2) " + pocao2.getNome() + " - " + pocao2.getDescricao());
         jogador.getInventario().adicionarItem(pocao2);
-        
+
         Tela.narrar("");
         Tela.esperarEnter();
     }
 
     // Cria uma poção baseada no tipo (1=Cura, 2=Dano, 3=Defesa)
-    private Item criarPocaoAleatoria(int tipo) {
+    private Item criarPocaoAleatoria(int tipo) throws Exception {
         switch (tipo) {
             case 1:
-                return new Item("Poção da Cura", "Restaura 40 HP", "CURA", (short)1);
+                return new Item("Poção da Cura", "Restaura 40 HP", "CURA", (short)1,(short)40);
             case 2:
-                return new Item("Poção do Dano", "Dobra seu ataque temporariamente", "DANO_2X", (short)1);
+                return new Item("Poção do Dano", "Dobra seu ataque temporariamente", "DANO_X", (short)1,(short)2);
             case 3:
-                return new Item("Poção da Defesa", "Dobra sua defesa temporariamente", "DEFESA_2X", (short)1);
+                return new Item("Poção da Defesa", "Dobra sua defesa temporariamente", "DEFESA_2X", (short)1,(short)2);
             default:
-                return new Item("Poção da Cura", "Restaura 40 HP", "CURA", (short)1);
+                return new Item("Poção da Cura", "Restaura 40 HP", "CURA", (short)1,(short)40);
         }
     }
 
     private boolean usarItem() throws Exception {
         Tela.limparTela();
         Tela.narrar("=== INVENTÁRIO ===\n");
-        
+
         // Filtra apenas itens USÁVEIS em batalha
         List<Item> itensUsaveis = this.jogador.getInventario().getItensUsaveisEmBatalha();
 
@@ -641,7 +643,7 @@ public class Jogo{
             Tela.esperarEnter();
             return false;
         }
-        
+
         // Exibe menu numerado
         for (int i = 0; i < itensUsaveis.size(); i++) {
             Item item = itensUsaveis.get(i);
@@ -649,7 +651,7 @@ public class Jogo{
         }
         Tela.narrar((itensUsaveis.size() + 1) + ". Cancelar");
         Tela.narrar("-----------------------\n");
-        
+
         // Lê escolha do jogador
         int escolha = -1;
         try {
@@ -660,64 +662,62 @@ public class Jogo{
             Tela.esperarEnter();
             return false;
         }
-        
+
         // Verifica se cancelou
         if (escolha == itensUsaveis.size() + 1) {
             Tela.narrar("Você decidiu não usar nenhum item.");
             Tela.esperarEnter();
             return false;
         }
-        
+
         // Verifica se a escolha é válida
         if (escolha < 1 || escolha > itensUsaveis.size()) {
             Tela.narrar("\n[ERRO] Opção inválida!");
             Tela.esperarEnter();
             return false;
         }
-        
+
         // Pega o item escolhido
         Item itemEscolhido = itensUsaveis.get(escolha - 1);
         String nomeItem = itemEscolhido.getNome();
         String efeito = itemEscolhido.getEfeito();
-        
+        int potencia = itemEscolhido.getPotencia();
+
         // Remove 1 unidade do inventário
         if (!this.jogador.getInventario().removerItem(nomeItem, 1)) {
             Tela.narrar("\n[ERRO] Não foi possível usar o item!");
             Tela.esperarEnter();
             return false;
         }
-        
+
         // Aplica o efeito
         Tela.limparTela();
         Tela.narrar("\n[ITEM USADO] " + nomeItem + "\n");
-        
+
         if (efeito.equals("CURA")) {
-            // Poção da Cura
-            int cura = 40;
-            this.jogador.curar(cura);
-            Tela.narrar("💚 Você recuperou " + cura + " HP!");
-            
-        } else if (efeito.equals("DANO_2X")) {
-            // Poção do Dano - DOBRA o ataque
+            this.jogador.curar(potencia); // <-- USA A POTÊNCIA
+            Tela.narrar("💚 Você recuperou " + potencia + " HP!");
+
+        } else if (efeito.equals("DANO_X")) { // <-- MUDA PARA O EFEITO GENÉRICO
             int ataqueOriginal = this.jogador.getAtaque();
-            int novoAtaque = ataqueOriginal * 2;
+            int novoAtaque = ataqueOriginal * potencia; // <-- USA A POTÊNCIA
             this.jogador.setAtaque(novoAtaque);
-            Tela.narrar("⚔️ Seu ataque DOBROU! (" + ataqueOriginal + " → " + novoAtaque + ")");
+            Tela.narrar("⚔️ Seu ataque foi multiplicado por " + potencia + "! (" + ataqueOriginal + " → " + novoAtaque + ")");
             Tela.narrar("   O efeito dura até o fim da batalha!");
-            
-        } else if (efeito.equals("DEFESA_2X")) {
-            // Poção da Defesa - DOBRA a defesa
+
+        } else if (efeito.equals("DEFESA_X")) { // <-- MUDA PARA O EFEITO GENÉRICO
             int defesaOriginal = this.jogador.getDefesa();
-            int novaDefesa = defesaOriginal * 2;
+            int novaDefesa = defesaOriginal * potencia; // <-- USA A POTÊNCIA
             this.jogador.setDefesa(novaDefesa);
-            Tela.narrar("🛡️ Sua defesa DOBROU! (" + defesaOriginal + " → " + novaDefesa + ")");
+            Tela.narrar("🛡️ Sua defesa foi multiplicada por " + potencia + "! (" + defesaOriginal + " → " + novaDefesa + ")");
             Tela.narrar("   O efeito dura até o fim da batalha!");
         }
-        
+
+
         Tela.narrar("\nHP atual: " + this.jogador.getPontosVida() + "/" + this.jogador.getPontosVidaMax());
         Tela.esperarEnter();
         return true;
-    }    
+    }
 
     // Método para salvar stats originais antes da batalha
     private void salvarStatsOriginais() {
@@ -736,7 +736,7 @@ public class Jogo{
             buffAtivo = false;
         }
     }
-    
+
 
     public void tratarTurnoAtaquePadrao(Inimigo inimigo) throws Exception {
         if(this.jogador.getClass() == Berserker.class){ // LENTO
@@ -775,14 +775,12 @@ public class Jogo{
 
         int ataqueTotal = ataqueBaseComBonus + resultadoDado;
         int defesaAlvo = alvo.getDefesa();
-        Tela.narrar(atacante.getNome() + " ataca com " + ataqueBaseComBonus + " + (" 
+        Tela.narrar(atacante.getNome() + " ataca com " + ataqueBaseComBonus + " + ("
         + resultadoDado + " no dado) = " + ataqueTotal + " de força!");
 
-        // Calcula o dano ANTES de aplicar
-        int danoReal = Math.max(0, ataqueTotal - defesaAlvo);
+        // chama o metodo de receber o dano aonde é calculado o dano, aplica e retona o dano causa para poder ser usado aqui
+        int danoReal = alvo.receberDano(ataqueTotal);
 
-        // Aplica o dano
-        alvo.receberDano(ataqueTotal);
 
         // Exibe a narrativa correta
         if (danoReal == 0) {
@@ -805,5 +803,3 @@ public class Jogo{
         Tela.limparTela();
     }
 }
-
-

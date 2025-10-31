@@ -27,7 +27,7 @@ public class Inventario implements Cloneable,java.io.Serializable{
         }
     }
 
-    public void adicionarItem(Item itemParaAdicionar) {
+    public void adicionarItem(Item itemParaAdicionar) throws Exception {
         for (Item itemExistente : this.itens) {
             if (itemExistente.equals(itemParaAdicionar)) {
                 int novaQuantidade = itemExistente.getQuantidade() + itemParaAdicionar.getQuantidade();
@@ -39,7 +39,7 @@ public class Inventario implements Cloneable,java.io.Serializable{
         this.itens.add(itemParaAdicionar);
     }
 
-    public boolean removerItem(String nomeDoItem, int quantidadeParaRemover){
+    public boolean removerItem(String nomeDoItem, int quantidadeParaRemover) throws Exception {
 
         for(int i = 0; i < this.itens.size(); i++){
             Item itemExistente = this.itens.get(i); // pega o item no indice 'i'
@@ -77,7 +77,7 @@ public class Inventario implements Cloneable,java.io.Serializable{
         List<Item> itensUsaveis = new ArrayList<>();
         for (Item item : this.itens) {
             String efeito = item.getEfeito();
-            if (efeito.equals("CURA") || efeito.equals("DANO_2X") || efeito.equals("DEFESA_2X")) {
+            if (efeito.equals("CURA") || efeito.equals("DANO_X") || efeito.equals("DEFESA_X")) {
                 itensUsaveis.add(item);
             }
         }

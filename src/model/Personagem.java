@@ -118,13 +118,14 @@ public abstract class Personagem implements Cloneable,java.io.Serializable {
     }
 
     // Método Dano do model.Personagem
-    public void receberDano(int dano) throws Exception {
+    public int receberDano(int dano) throws Exception {
         if(dano < 0) throw new Exception("Dano inválido");
         int danoReal = Math.max(0, dano - this.defesa); // Dano - Defesa
         this.pontosVida -= danoReal;
         if (this.pontosVida < 0) {
             this.pontosVida = 0;
         }
+        return danoReal;
     }
 
     // Método para dano direto que IGNORA a defesa (usado em armadilhas/eventos)
