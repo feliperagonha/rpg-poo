@@ -8,6 +8,9 @@ package model;// Baseado na classe ranged(arqueiro,atirador, etc...)
 // Habilidade especial do Oráculo: Tiro Preciso
 // - Dobra o ataque temporariamente
 
+import util.Dado;
+import util.Tela;
+
 public class Cacador extends Personagem{
 
     public Cacador() throws Exception {
@@ -28,6 +31,20 @@ public class Cacador extends Personagem{
         } catch (Exception e) {
             return "Erro ao ativar habilidade!";
         }
+    }
+
+    @Override
+    public boolean aplicarPassivaDeAtaque(Personagem alvo) throws Exception {
+        // "QUANDO"
+        if (Dado.rolar(100) <= 25) {
+
+            // "O QUÊ" (Reutilizando seu método existente)
+            String narracao = this.habilidadeEspecial(alvo);
+            Tela.narrar(narracao); // A própria classe narra
+
+            return true; // Sim, ativou
+        }
+        return false; // Não ativou
     }
 
     @Override

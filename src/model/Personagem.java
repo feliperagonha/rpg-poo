@@ -104,6 +104,10 @@ public abstract class Personagem implements Cloneable,java.io.Serializable {
         return this.habilidadeEspecial(alvo);
     }
 
+    public boolean aplicarPassivaDeAtaque(Personagem alvo) throws Exception {
+        return false; // Por padrão, personagens não têm passiva
+    }
+
     public void mostrarInfos()
     {
         System.out.println(this);

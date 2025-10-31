@@ -73,9 +73,15 @@ public class Inventario implements Cloneable,java.io.Serializable{
         Tela.narrar(representacaoDoInventario);
     }
 
-
-    public List<Item> getItens() {
-        return this.itens;
+    public List<Item> getItensUsaveisEmBatalha() {
+        List<Item> itensUsaveis = new ArrayList<>();
+        for (Item item : this.itens) {
+            String efeito = item.getEfeito();
+            if (efeito.equals("CURA") || efeito.equals("DANO_2X") || efeito.equals("DEFESA_2X")) {
+                itensUsaveis.add(item);
+            }
+        }
+        return itensUsaveis; // Retorna uma NOVA lista apenas com os itens filtrados
     }
 
     @Override

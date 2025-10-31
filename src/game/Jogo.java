@@ -632,14 +632,8 @@ public class Jogo{
         Tela.narrar("=== INVENTÁRIO ===\n");
         
         // Filtra apenas itens USÁVEIS em batalha
-        List<Item> itensUsaveis = new ArrayList<>();
-        for (Item item : this.jogador.getInventario().getItens()) {
-            String efeito = item.getEfeito();
-            if (efeito.equals("CURA") || efeito.equals("DANO_2X") || efeito.equals("DEFESA_2X")) {
-                itensUsaveis.add(item);
-            }
-        }
-        
+        List<Item> itensUsaveis = this.jogador.getInventario().getItensUsaveisEmBatalha();
+
         // Verifica se tem itens usáveis
         if (itensUsaveis.isEmpty()) {
             Tela.narrar("Você não possui itens usáveis em batalha!");
@@ -772,28 +766,15 @@ public class Jogo{
         String narracaoHabilidade = null;
         boolean habilidadeAtivada = false;
 
+        habilidadeAtivada = atacante.aplicarPassivaDeAtaque(alvo); //evita ter q usar getClass pra duto
 
-        //habilidades passivas berseker
-        if(atacante.getClass() == Berserker.class && atacante.getPontosVida() < (atacante.getPontosVidaMax() * 0.5)){ //50% da vida maxima
-            narracaoHabilidade = atacante.habilidadeEspecial(alvo);
+        // Atualiza o ataqueBaseComBonus SE a habilidade tiver ativado
+        if (habilidadeAtivada) {
             ataqueBaseComBonus = atacante.getAtaque();
-            habilidadeAtivada = true;
         }
 
-
-        if(atacante.getClass() == Cacador.class){
-            if (Dado.rolar(100) <= 25){
-                narracaoHabilidade = atacante.habilidadeEspecial(alvo);
-                ataqueBaseComBonus = atacante.getAtaque();
-                habilidadeAtivada = true;
-            }
-        }
         int ataqueTotal = ataqueBaseComBonus + resultadoDado;
         int defesaAlvo = alvo.getDefesa();
-
-        if(narracaoHabilidade != null){
-            Tela.narrar(narracaoHabilidade);
-        }
         Tela.narrar(atacante.getNome() + " ataca com " + ataqueBaseComBonus + " + (" 
         + resultadoDado + " no dado) = " + ataqueTotal + " de força!");
 

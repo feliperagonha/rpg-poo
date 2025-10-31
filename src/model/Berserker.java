@@ -8,8 +8,8 @@ package model;// Baseada na classe Guerreiro
 // Habilidade Especial: Fúria Selvagem
 // - Aumenta temporariamente o ataque em 50%
 // - Reduz a defesa em 2 pontos durante a fúria
-
-public class Berserker extends Personagem {
+import util.Tela;
+public class Berserker extends Personagem{
 
     public Berserker() throws Exception {
         super("Berserker", 150, 20, 5, (byte)1);
@@ -30,6 +30,19 @@ public class Berserker extends Personagem {
         } catch (Exception e) {
             return "Erro ao ativar habilidade!";
         }
+    }
+    @Override
+    public boolean aplicarPassivaDeAtaque(Personagem alvo) throws Exception {
+        // "QUANDO"
+        if (this.getPontosVida() < (this.getPontosVidaMax() * 0.5)) {
+
+            // "O QUÊ" (Reutilizando seu método existente)
+            String narracao = this.habilidadeEspecial(alvo);
+            Tela.narrar(narracao); // A própria classe narra
+
+            return true; // Sim, ativou
+        }
+        return false; // Não ativou
     }
 
     @Override
