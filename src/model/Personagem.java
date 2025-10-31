@@ -52,7 +52,7 @@ public abstract class Personagem implements Cloneable,java.io.Serializable {
     public int getPontosVidaMax()     {return pontosVidaMax;}
     public int getAtaque()            {return ataque;}
     public int getDefesa()            {return defesa;}
-    public byte getNivel()           {return nivel;}
+    public byte getNivel()            {return nivel;}
     public Inventario getInventario() {return inventario;}
 
     // Setters
@@ -117,6 +117,7 @@ public abstract class Personagem implements Cloneable,java.io.Serializable {
         return this.getPontosVida() > 0;
     }
 
+
     // Método Dano do model.Personagem
     public int receberDano(int dano) throws Exception {
         if(dano < 0) throw new Exception("Dano inválido");
@@ -128,7 +129,7 @@ public abstract class Personagem implements Cloneable,java.io.Serializable {
         return danoReal;
     }
 
-    // Método para dano direto que IGNORA a defesa (usado em armadilhas/eventos)
+    // Método para dano direto que IGNORA a defesa (usado em armadilhas)
     public void receberDanoDireto(int dano) throws Exception {
         if(dano < 0) throw new Exception("Dano inválido");
         this.pontosVida -= dano;

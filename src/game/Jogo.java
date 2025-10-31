@@ -253,13 +253,13 @@ public class Jogo{
         }
     }
 
-    // CAMINHO 2: Caverna com morcegos (ARRISCADO - armadilha OBRIGATÓRIA)
     private void caminhoArriscadoAto1() throws Exception {
         Tela.limparTela();
         Tela.imprimirArquivoTxt("historia/ato1/caminho_arriscado_intro.txt");
         Tela.esperarEnter();
 
         Tela.imprimirArquivoTxt("historia/ato1/caminho_arriscado_perigo.txt");
+        Tela.esperarEnter();
 
         int escolhaArmadilha = -1;
         while (escolhaArmadilha != 1 && escolhaArmadilha != 2) {
@@ -270,43 +270,38 @@ public class Jogo{
                 escolhaArmadilha = Teclado.getUmInt();
 
                 if (escolhaArmadilha == 1) {
-                    // TENTAR PASSAR
+                    // ========== OPÇÃO 1: TENTAR PASSAR PELOS MORCEGOS ==========
                     Tela.narrar("\n🎲 Rolando dados...");
                     int resultado = Dado.rolar(20);
-                    Tela.narrar("Você tirou: " + resultado + " (necessário > 11 para conseguir se livrar dos morcegos.)\n");
+                    Tela.narrar("Você tirou: " + resultado + " (necessário 11+ para se livrar dos morcegos)\n");
                     Tela.esperarEnter();
 
                     if (resultado >= 11) {
-                        // SUCESSO - dano leve
+                        // SUCESSO - dano leve e recompensas
                         Tela.imprimirArquivoTxt("historia/ato1/armadilha_sucesso.txt");
-                        darRecompensaArmadilha(); // DA 2 POÇÕES ALEATÓRIAS
+                        darRecompensaArmadilha(); // DÁ 2 POÇÕES ALEATÓRIAS
 
                         int dano = 15;
                         int defesaAtual = jogador.getDefesa();
-                        jogador.receberDano(dano + defesaAtual); // Dano direto ignorando defesa
+                        jogador.receberDano(dano + defesaAtual);
 
                         Tela.narrar("Você sofreu " + dano + " de dano pelas mordidas!");
                         Tela.narrar("HP atual: " + jogador.getPontosVida() + "/" + jogador.getPontosVidaMax() + "\n");
                         Tela.esperarEnter();
 
                         if (jogador.estaVivo()) {
-                            Tela.narrar("Você atravessa a caverna e sai do outro lado...");
-                            Tela.narrar("📦 Você encontrou um baú escondido!");
-                            Tela.narrar("Ganhou: Tônico Revigorante (+2 na vida máxima)!\n");
-
-                            Item tonico = new Item("Tônico Revigorante", "Aumenta a resistência", "+2 HP Max", (short)1,(short) 2);
-                            jogador.getInventario().adicionarItem(tonico);
-                            jogador.setPontosVidaMax(jogador.getPontosVidaMax() + 2);
-                            avancarParaAto((byte)2);//atualiza o nivel e avanca para o proximo ato
+                            Tela.narrar("Você atravessa a caverna e sai do outro lado!\n");
+                            Tela.esperarEnter();
+                            ato2();
                         }
 
                     } else {
                         // FALHA - dano pesado
                         Tela.imprimirArquivoTxt("historia/ato1/armadilha_falha.txt");
 
-                        int dano = jogador.getPontosVidaMax();
+                        int dano = 30;
                         int defesaAtual = jogador.getDefesa();
-                        jogador.receberDano(dano + defesaAtual); // Dano direto
+                        jogador.receberDano(dano + defesaAtual);
 
                         Tela.narrar("Você sofreu " + dano + " de dano!");
                         Tela.narrar("HP atual: " + jogador.getPontosVida() + "/" + jogador.getPontosVidaMax() + "\n");
@@ -320,16 +315,48 @@ public class Jogo{
                         Tela.narrar("Gravemente ferido, você cambaleia para fora da caverna.");
                         Tela.narrar("Você precisa se recuperar antes de continuar...\n");
                         Tela.esperarEnter();
-
-                        // Vai para o ato 2 enfraquecido
                         ato2();
                     }
 
                 } else if (escolhaArmadilha == 2) {
-                    // FUGIR - volta para o caminho seguro
-                    Tela.imprimirArquivoTxt("historia/ato1/armadilha_fugir.txt");
+                    // ========== OPÇÃO 2: FUGIR (COM CHANCE DE FALHA) ==========
+                    Tela.narrar("\n🎲 Você escolheu fugir, mas há chance de estar cercado pelos morcegos!");
+                    Tela.narrar("Rolando dados...");
+                    int resultadoFuga = Dado.rolar(20);
+                    Tela.narrar("Você tirou: " + resultadoFuga + " (necessário 11+ para fugir com sucesso)\n");
                     Tela.esperarEnter();
-                    caminhoSeguroAto1();
+
+                    if (resultadoFuga >= 11) {
+                        // SUCESSO NA FUGA - volta sem dano
+                        Tela.narrar("✅ SUCESSO! Você consegue recuar com segurança!");
+                        Tela.narrar("Com prudência, você sai da caverna e decide atracar na praia.\n");
+                        Tela.esperarEnter();
+                        caminhoSeguroAto1(); // Volta para o caminho seguro
+
+                    } else {
+                        // FALHA NA FUGA - é cercado e sofre dano máximo
+                        Tela.narrar("❌ FALHA! Os morcegos te cercaram antes que você pudesse fugir!");
+                        Tela.imprimirArquivoTxt("historia/ato1/armadilha_falha.txt");
+
+                        int dano = 40; // ✅ Dano alto mas não mata (era getPontosVidaMax)
+                        int defesaAtual = jogador.getDefesa();
+                        jogador.receberDano(dano + defesaAtual);
+
+                        Tela.narrar("Você sofreu " + dano + " de dano!");
+                        Tela.narrar("HP atual: " + jogador.getPontosVida() + "/" + jogador.getPontosVidaMax() + "\n");
+                        Tela.esperarEnter();
+
+                        if (!jogador.estaVivo()) {
+                            Tela.narrar("💀 Você foi devorado pelos morcegos... FIM DE JOGO");
+                            return;
+                        }
+
+                        Tela.narrar("Gravemente ferido, você cambaleia para fora da caverna.");
+                        Tela.narrar("Você precisa se recuperar antes de continuar...\n");
+                        Tela.esperarEnter();
+                        ato2();
+                    }
+
                 } else {
                     Tela.narrar("Opção inválida!");
                     Tela.esperarEnter();
@@ -341,6 +368,7 @@ public class Jogo{
             }
         }
     }
+    
 
 
     // ========== ATO II: O MAR DAS SERPENTES ==========
@@ -623,7 +651,7 @@ public class Jogo{
             case 2:
                 return new Item("Poção do Dano", "Dobra seu ataque temporariamente", "DANO_X", (short)1,(short)2);
             case 3:
-                return new Item("Poção da Defesa", "Dobra sua defesa temporariamente", "DEFESA_2X", (short)1,(short)2);
+                return new Item("Poção da Defesa", "Dobra sua defesa temporariamente", "DEFESA_X", (short)1,(short)2);
             default:
                 return new Item("Poção da Cura", "Restaura 40 HP", "CURA", (short)1,(short)40);
         }
