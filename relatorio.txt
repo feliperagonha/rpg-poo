@@ -1,14 +1,14 @@
 ALUNO: FELIPE RAGONHA
 Algumas das Contribuições no Projeto:
 1. Classe Oraculo.java:
-- Método amaldiçoar(Personagem alvo)Desenvolvimento da classe abstrata Personagem.java com todos os atributos (nome, pontosVida, pontosVidaMax, ataque, defesa, nivel, inventario) e métodos essenciais: toString(), equals(), hashCode(), clone(), construtores (padrão e de cópia), receberDano(), curar(), estaVivo(), mostrarInfos().
+- Método amaldiçoar(Personagem alvo)  Desenvolvimento da Personagem.java
 - Ajustei a lógica de combate específica para a classe Oráculo, garantindo que suas habilidades (curar e amaldiçoar), pois eu e bruno jogamos bastante para que ficasse sem bugs
 
 2. Classe Jogo.java - Sistema de Combate e Narrativa:
 Método tratarTurnoOraculo() 
 menu de habilidades (ataque, curar, amaldiçoar, voltar).
 Método usarItem(): Desenvolvi a funcionalidade completa de uso de itens durante o combate, incluindo listagem do inventário, seleção do item, aplicação dos efeitos (cura ou buff) e remoção/decremento da quantidade.
-Método iniciarJornada(): Implementei a estrutura narrativa completa dos três atos da história viking (Ato I: Inverno Sem Fim, Ato II: Mar das Serpentes, Ato III: Chegada em Thule), incluindo decisões do jogador, criação dos inimigos específicos e progressão linear da narrativa.
+Método iniciarJornada(): Implementei a estrutura narrativa completa dos três atos da história viking (Ato I: Inverno Sem Fim, Ato II: Mar das Serpentes, Ato III: Chegada em Thule), incluindo decisões do jogador
 Método fugir(): opção de fugir com chance de falha conforme o requisito do trabalho.
 Método batalhar()
 
@@ -23,9 +23,11 @@ Construtor e Construtor de cópia
 - Chance de falha ao escolher a opção fugir.
 - Implementação dos Ato1 e Ato2 
 
-5. Criação dos métodos darRecompensaArmadilha() e darRecompensaBatalha()
+5. Criação dos métodos darRecompensaArmadilha() e darRecompensaBatalha() e imprimirInventario()
 A ideia das poções ao ganhar a batalha pois assim que acabar a batalha tera o método darRecompensaBatalha()
-Implementação dos atos na história 
+
+
+6. Validações nos construtores e organização do código.
 
 Autoavaliação:
 Considero que contribuí de forma significativa para o projeto, especialmente no desenvolvimento da lógica de jogo e narrativa. 
@@ -59,13 +61,14 @@ executarTurno()
 Implementação do método tratarTurnoAtaquePadrao()
 
 6. Desenvolvimento completo da classe Tela.java com todos os métodos de apresentação
-narrar(), imprimirStatusBatalha(), imprimirMenuDeBatalha(), imprimirMenuOraculo(), imprimirHistoria(), imprimirInventario()
+narrar(), imprimirStatusBatalha(), imprimirMenuDeBatalha(), imprimirMenuOraculo(), imprimirHistoria()
 
 Autoavaliação:
 Contribuí de forma fundamental na construção da arquitetura completa do projeto, 
 desde a idealização da história viking até a implementação de todas as classes base e sistemas essenciais (personagens, combate, itens, inventário). 
-Garanti que 100% dos requisitos obrigatórios do TrabalhoRPG.pdf fossem atendidos, incluindo todos os métodos exigidos 
+Garantimos que 100% dos requisitos obrigatórios do Trabalho fossem atendidos, incluindo todos os métodos exigidos 
 (toString, equals, hashCode, clone, compareTo, construtores de cópia). O trabalho foi desenvolvido em dupla de forma extremamente colaborativa com o Felipe, 
 onde minhas implementações da arquitetura base permitiram que ele desenvolvesse a lógica de jogo, narrativa e funcionalidades de interação.
-Eu e Felipe organizamos o código da mesma maneira ensinada em aula seguindo as melhores práticas da linguagem Java
+Eu e Felipe organizamos o código da mesma maneira ensinada em aula seguindo as melhores práticas da linguagem Java.
+Nota: 9,0
 
