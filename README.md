@@ -16,7 +16,10 @@ Um RPG de texto ambientado na Era Viking, onde você lidera uma expedição épi
 
 ### Compilação
 Execute o seguinte comando a partir da **raiz do projeto**:
-
+**Use esse comando antes de rodar os proximos para que o terminal mostre os emojis**
+```powershell
+  chcp 65001
+```
 ```powershell
 javac -d out/production/rpg-poo -sourcepath src src\game\Main.java
 ```
