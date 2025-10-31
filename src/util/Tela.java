@@ -87,7 +87,8 @@ public class Tela {
     }
 
     public static void imprimirHistoria() {
-        List<String> linhas = lerArquivo("historia.txt");
+        limparTela();
+        List<String> linhas = lerArquivo("historia/intro.txt");
         int contadorDeLinhas = 0;
 
         if (linhas.isEmpty()) {
@@ -103,8 +104,23 @@ public class Tela {
             }
         }
     }
+    public static void imprimirArquivoTxt(String caminhoDoArquivo) {
 
-    public static   void narrar(String texto){
+        List<String> linhas = lerArquivo(caminhoDoArquivo);
+
+        if (linhas.isEmpty()) {
+            return; // Arquivo não encontrado ou vazio
+        }
+
+        for (String linha : linhas) {
+            if (linha.equals("---")) {
+                esperarEnter();
+            } else {
+                imprimirComEfeito(linha);
+            }
+        }
+    }
+    public static  void narrar(String texto){
         imprimirComEfeito(texto);
     }
 
@@ -114,14 +130,6 @@ public class Tela {
         System.out.println("1. Novo Jogo"             );
         System.out.println("2. Carregar Jogo"         );
         System.out.println("3. Sair"                  );
-    }
-    public static void imprimirMenuSaves() {
-        limparTela();
-        narrar("--- Escolha um Slot para Salvar ---");
-        narrar("1. Save Slot 1");
-        narrar("2. Save Slot 2");
-        narrar("3. Save Slot 3");
-        narrar("-----------------------------------");
     }
 
     public static void imprimirStatus(Personagem personagem) {
@@ -138,16 +146,6 @@ public class Tela {
         System.out.println("----------------------------------------");
     }
 
-    public static void imprimirAcaoDeCombate(String acao) {
-        imprimirComEfeito(acao);
-    }
-
-    public static void imprimirMapa() {
-        System.out.println("--- Mapa ---"                   );
-        System.out.println("(Floresta) -- (Vila) -- (Porto)");
-        System.out.println("                  |"            );
-        System.out.println("               (Mar)"           );
-    }
 
     public static void imprimirMenuBatalha(Personagem jogador) { // Recebe o jogador
         System.out.println("--- O que você faz? ---");

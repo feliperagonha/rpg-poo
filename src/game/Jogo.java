@@ -52,33 +52,10 @@ public class Jogo{
     }
 
     private void novoJogo() throws Exception{
-        Tela.imprimirMenuSaves();
-        int slot = -1;
-
-        while(slot < 1 || slot > 3) {
-            try {
-                Tela.narrar("Escolha o slot (de 1 a 3)");
-                slot = Teclado.getUmInt();
-                if (slot < 1 || slot > 3) {
-                    Tela.narrar("Slot inválido!");
-                }
-
-            } catch (Exception e) {
-                Tela.narrar("Erro: Entrada inválida. Por favor, digite 1, 2 ou 3.");
-                Teclado.getUmString();
-            }
-        }
-
-        Tela.narrar("O jogo vai ser salvo no slot " + slot + ".");
-        Tela.esperarEnter();
-
-        Tela.limparTela();
         Tela.imprimirHistoria();
-        Tela.narrar("\nAo tocar a pedra, suas mãos formigam...");
-        Tela.narrar("Um brilho intenso emana das runas, cegando você momentaneamente!");
         Tela.esperarEnter();
 
-
+        Tela.imprimirArquivoTxt("historia/intro_pedra.txt");
         this.jogador = criarPersonagem();
 
         Tela.narrar("\nPersonagem criado com sucesso!");
@@ -89,22 +66,7 @@ public class Jogo{
 
     private Personagem criarPersonagem() throws Exception {
     Tela.limparTela();
-    Tela.narrar("--- Criação de Personagem ---\n");
-    Tela.narrar("A energia da runa ressoa em você. Quem você se tornará?\n");
-    
-    Tela.narrar("1. O BERSERKER (Guerreiro)");
-    Tela.narrar("    HP: 150 | ATK: 20 | DEF: 5");
-    Tela.narrar("   Fúria viking devastadora em combate\n");
-    
-    Tela.narrar("2. O ORACULO (Mago)");
-    Tela.narrar("    HP: 80 | ATK: 5 | DEF: 15");
-    Tela.narrar("   Magias de cura e maldição arcana\n");
-    
-    Tela.narrar("3. O CAÇADOR (Arqueiro)");
-    Tela.narrar("    HP: 120 | ATK: 12 | DEF: 4");
-    Tela.narrar("   Precisão mortal e ataques críticos\n");
-    
-    Tela.narrar("--------------------------------");
+    Tela.imprimirArquivoTxt("historia/criacao_personagem.txt");
 
     int escolhaClasse = -1;
     Personagem personagemEscolhido = null;
@@ -154,10 +116,7 @@ public class Jogo{
     // ========== ATO I: O INVERNO SEM FIM ==========
     private void ato1() throws Exception {
         Tela.limparTela();
-        Tela.narrar("--- A Jornada Começa ---");
-        Tela.narrar("Seu pequeno barco, o 'Corvo Marinho', parte em meio ao gelo.");
-        Tela.narrar("Após um dia de viagem, você avista uma ilha coberta de névoa,");
-        Tela.narrar("de onde ecoa um som lamentoso. O mar à frente está agitado.\n");
+        Tela.imprimirArquivoTxt("historia/ato1/inicio.txt");
         Tela.esperarEnter();
         
         decisaoAto1();
@@ -167,10 +126,7 @@ public class Jogo{
         int escolha = -1;
         while (escolha != 1 && escolha != 2) {
             Tela.limparTela();
-            Tela.narrar("--- O QUE FAZER? ---");
-            Tela.narrar("1. Atracar na ilha nebulosa (Pode haver suprimentos)");
-            Tela.narrar("2. Explorar uma caverna na costa (Caminho mais rápido, mas perigoso)");
-            Tela.narrar("--------------------\n");
+            Tela.imprimirArquivoTxt("historia/ato1/decisao_menu.txt");
             
             try {
                 Tela.narrar("Sua escolha:");
@@ -195,12 +151,7 @@ public class Jogo{
     // CAMINHO 1: Atracar na ilha (SEGURO - batalha direta)
     private void caminhoSeguroAto1() throws Exception {
         Tela.limparTela();
-        Tela.narrar("Você ancora em uma praia de areia negra.");
-        Tela.narrar("Ao explorar, você encontra os restos de um acampamento.");      
-        Tela.esperarEnter();
-        
-        Tela.narrar("O som lamentoso se intensifica...");
-        Tela.narrar("Um grupo de DRAUGR (guerreiros mortos-vivos) emerge do chão!\n");
+        Tela.imprimirArquivoTxt("historia/ato1/caminho_seguro.txt");
         Tela.esperarEnter();
         
         Inimigo draugr = new Inimigo("Draugr", 40, 8, 5, (byte)1);
@@ -208,6 +159,7 @@ public class Jogo{
         
         if (jogador.estaVivo()) {
             darRecompensaBatalha(); // da a recompensa
+            // tentar implementar soma do nivel do usuário, aumenta o nivel, dano e defesa em 20%
             Tela.narrar("Você derrotou os Draugr e segue viagem...\n");
             Tela.esperarEnter();
             ato2();
@@ -217,26 +169,14 @@ public class Jogo{
     // CAMINHO 2: Caverna com morcegos (ARRISCADO - armadilha OBRIGATÓRIA)
     private void caminhoArriscadoAto1() throws Exception {
         Tela.limparTela();
-        Tela.narrar("Você decide explorar uma caverna na costa.");
-        Tela.narrar("A entrada é estreita e úmida. Ecos estranhos vêm do fundo.");
-        Tela.narrar("Você acende uma tocha e entra...\n");
+        Tela.imprimirArquivoTxt("historia/ato1/caminho_arriscado_intro.txt");
         Tela.esperarEnter();
         
-        Tela.narrar("De repente, centenas de MORCEGOS despertam e atacam!");
-        Tela.narrar("Eles voam em direção ao seu rosto, mordendo e arranhando!\n");
-        Tela.esperarEnter();
-        
-        Tela.narrar("⚠️ PERIGO IMINENTE! ⚠️");
-        Tela.narrar("Você está sendo cercado por uma nuvem de morcegos raivosos!");
-        Tela.narrar("Não há como lutar contra tantos!\n");
-        Tela.esperarEnter();
-        
+        Tela.imprimirArquivoTxt("historia/ato1/caminho_arriscado_perigo.txt");
+
         int escolhaArmadilha = -1;
         while (escolhaArmadilha != 1 && escolhaArmadilha != 2) {
-            Tela.narrar("--- O QUE FAZER? ---");
-            Tela.narrar("1. Tentar passar correndo pela nuvem! (Rolar dados - Teste de Agilidade)");
-            Tela.narrar("2. Fugir da caverna e voltar para a praia");
-            Tela.narrar("--------------------\n");
+            Tela.imprimirArquivoTxt("historia/ato1/armadilha_decisao_menu.txt");
             
             try {
                 Tela.narrar("Sua escolha:");
@@ -251,9 +191,7 @@ public class Jogo{
                     
                     if (resultado >= 11) {
                         // SUCESSO - dano leve
-                        Tela.narrar("✅ SUCESSO!");
-                        Tela.narrar("Você corre protegendo o rosto com o manto!");
-                        Tela.narrar("Alguns morcegos te mordem, mas você consegue passar!\n");
+                        Tela.imprimirArquivoTxt("historia/ato1/armadilha_sucesso.txt");
                         darRecompensaArmadilha(); // DA 2 POÇÕES ALEATÓRIAS
                         
                         int dano = 15;
@@ -279,9 +217,7 @@ public class Jogo{
                         
                     } else {
                         // FALHA - dano pesado
-                        Tela.narrar("❌ FALHA!");
-                        Tela.narrar("Os morcegos te cobrem completamente!");
-                        Tela.narrar("Suas mordidas são venenosas e causam dor intensa!\n");
+                        Tela.imprimirArquivoTxt("historia/ato1/armadilha_falha.txt");
                         
                         int dano = jogador.getPontosVidaMax();
                         int defesaAtual = jogador.getDefesa();
@@ -306,8 +242,7 @@ public class Jogo{
                     
                 } else if (escolhaArmadilha == 2) {
                     // FUGIR - volta para o caminho seguro
-                    Tela.narrar("Com sabedoria, você recua antes que seja tarde demais!");
-                    Tela.narrar("Você sai da caverna e decide atracar na praia.\n");
+                    Tela.imprimirArquivoTxt("historia/ato1/armadilha_fugir.txt");
                     Tela.esperarEnter();
                     caminhoSeguroAto1();
                 } else {
@@ -326,13 +261,7 @@ public class Jogo{
     // ========== ATO II: O MAR DAS SERPENTES ==========
     private void ato2() throws Exception {
         Tela.limparTela();
-        Tela.narrar("--- Ato II: O Mar das Serpentes ---");
-        Tela.narrar("Após sobreviver ao primeiro desafio, a confiança da tripulação cresce.");
-        Tela.narrar("O mar se acalma, mas o céu adquire uma cor esverdeada e doentia.");
-        Tela.narrar("Vocês entraram no infame Mar das Serpentes.");
-        Tela.narrar("À distância, você vê os destroços de outro navio viking,");
-        Tela.narrar("mas algo grande se move sob a superfície perto dele.\n");
-        Tela.esperarEnter();
+        Tela.imprimirArquivoTxt("historia/ato2/inicio.txt");
         
         decisaoAto2();
     }
@@ -341,10 +270,7 @@ public class Jogo{
         int escolha = -1;
         while (escolha != 1 && escolha != 2) {
             Tela.limparTela();
-            Tela.narrar("--- O QUE FAZER? ---");
-            Tela.narrar("1. Investigar os destroços (Pode haver tesouros, mas o risco é mais evidente)");
-            Tela.narrar("2. Fugir (Caminho mais longo, mas mais seguro)");
-            Tela.narrar("--------------------\n");
+            Tela.imprimirArquivoTxt("historia/ato2/decisao_menu.txt");
             
             try {
                 Tela.narrar("Sua escolha:");
@@ -369,9 +295,7 @@ public class Jogo{
     // CAMINHO 1: Investigar destroços (ARRISCADO - batalha + recompensa)
     private void caminhoArriscadoAto2() throws Exception {
         Tela.limparTela();
-        Tela.narrar("Você decide investigar os destroços.");
-        Tela.narrar("Conforme se aproximam, algo gigantesco emerge da água!");
-        Tela.narrar("Uma SERPENTE MARINHA protege seu ninho nos destroços!\n");
+        Tela.imprimirArquivoTxt("historia/ato2/caminho_arriscado.txt");
         Tela.esperarEnter();
         
         Inimigo serpenteMarinha = new Inimigo("Serpente Marinha", 100, 12, 8, (byte)2);
@@ -391,9 +315,7 @@ public class Jogo{
     // CAMINHO 2: Contornar a área (SEGURO - penalidade leve)
     private void caminhoSeguroAto2() throws Exception {
         Tela.limparTela();
-        Tela.narrar("Você decide navegar contornando a área perigosa.");
-        Tela.narrar("Vocês gastam meio dia remando para evitar o perigo.");
-        Tela.narrar("Estão seguros, mas exaustos e com menos suprimentos.\n");
+        Tela.imprimirArquivoTxt("historia/ato2/caminho_seguro.txt");
         
         int danoExaustao = 15;
         jogador.receberDanoDireto(danoExaustao);
@@ -414,58 +336,31 @@ public class Jogo{
     // ========== ATO III: A CHEGADA EM THULE ==========
     private void ato3() throws Exception {
         Tela.limparTela();
-        Tela.narrar("--- Ato III: A Chegada em Thule ---");
-        Tela.narrar("Finalmente, após semanas no mar, vocês avistam...");
-        Tela.narrar("Uma ilha verdejante, banhada por uma luz dourada. THULE!");
-        Tela.narrar("Mas ao se aproximarem, vocês veem que a ilha é guardada");
-        Tela.narrar("por um clã rival, os 'Lobos de Gelo', que já reivindicaram o lugar.\n");
-        Tela.esperarEnter();
-        
-        Tela.narrar("O líder deles, um Jarl gigantesco, os aguarda na praia.");
-        Tela.narrar("JARL: 'Esta terra sagrada é nossa! Voltem para seu inverno e morram,");
-        Tela.narrar("ou deixem seus ossos em nossa praia!'\n");
-        Tela.esperarEnter();
-        
-        Tela.narrar("A jornada termina aqui.");
-        Tela.narrar("É lutar pela sobrevivência do seu povo ou falhar no último obstáculo.\n");
-        Tela.esperarEnter();
+        Tela.imprimirArquivoTxt("historia/ato3/inicio.txt");
+
         
         enfrentarBossFinal();
     }
     
     private void enfrentarBossFinal() throws Exception {
         Tela.limparTela();
-        Tela.narrar("======================================");
-        Tela.narrar("    ⚔️ BATALHA FINAL! ⚔️");
-        Tela.narrar("======================================\n");
+        Tela.imprimirArquivoTxt("historia/ato3/batalha_final_intro.txt");
         Tela.esperarEnter();
-        
-        Inimigo jarl = new Inimigo("Jarl, Líder dos Lobos de Gelo", 200, 15, 10, (byte)5);
+
+        // Inimigo jarl = new Inimigo("Jarl, Líder dos Lobos de Gelo", 200, 15, 10, (byte)5);
+        Inimigo jarl = new Inimigo("Jarl, Líder dos Lobos de Gelo", 150, 13, 9, (byte)5);
         batalhar(jarl);
+
+
         
         if (jogador.estaVivo()) {
             // VITÓRIA
             Tela.limparTela();
-            Tela.narrar("======================================");
-            Tela.narrar("         ✨ VITÓRIA! ✨");
-            Tela.narrar("======================================\n");
-            Tela.narrar("Com o Jarl derrotado, os Lobos de Gelo se rendem.");
-            Tela.narrar("Vocês conquistaram um novo lar para seu povo.");
-            Tela.narrar("A saga da 'Runa Despertada' será cantada por gerações.");
-            Tela.narrar("\n🏆 A MISSÃO FOI UM SUCESSO! 🏆\n");
-            Tela.esperarEnter();
+            Tela.imprimirArquivoTxt("historia/ato3/final_vitoria.txt");
         } else {
             // DERROTA
             Tela.limparTela();
-            Tela.narrar("======================================");
-            Tela.narrar("         💀 DERROTA 💀");
-            Tela.narrar("======================================\n");
-            Tela.narrar("Você cai na areia da praia.");
-            Tela.narrar("A última visão que você tem é do Jarl rindo");
-            Tela.narrar("enquanto sua tripulação é derrotada.");
-            Tela.narrar("A esperança do seu clã morre com você.");
-            Tela.narrar("\n❌ A MISSÃO FALHOU ❌\n");
-            Tela.esperarEnter();
+            Tela.imprimirArquivoTxt("historia/ato3/final_derrota.txt");
         }
     }
 
@@ -522,7 +417,6 @@ public class Jogo{
                     if (itemFoiUsado) {
                         // Se usou item, inimigo contra-ataca
                         if (inimigo.estaVivo()) {
-                            Tela.narrar("--- Turno do Inimigo ---");
                             executarTurno(inimigo, this.jogador); // Renomeado
                         }
                     } else {
@@ -591,7 +485,6 @@ public class Jogo{
 
 
         if (habilidadeExecutada && inimigo.estaVivo()) {
-            Tela.narrar("--- Turno do Inimigo ---");
             executarTurno(inimigo, this.jogador); // Renomeado
         }
         return true;
@@ -599,52 +492,6 @@ public class Jogo{
     
 
     // Método para usar item do inventário durante a batalha
-    /*
-    private boolean usarItem() throws Exception {
-        Tela.limparTela();
-        Tela.narrar("=== INVENTÁRIO ===");
-        
-        // Lista os itens disponíveis
-        this.jogador.getInventario().listarItens();
-        
-        Tela.narrar("\nDigite o nome EXATO do item que deseja usar (ou digite 'cancelar'):");
-        String nomeItem = Teclado.getUmString();
-        
-        if (nomeItem.equalsIgnoreCase("cancelar")) {
-            Tela.narrar("Você decidiu não usar nenhum item.");
-            Tela.esperarEnter();
-            return false ;
-        }
-        
-        // Verifica se o item existe e remove 1 unidade
-        if (this.jogador.getInventario().removerItem(nomeItem, 1)) {
-
-
-            // Aplica o efeito do item baseado no nome/tipo
-            if (nomeItem.toLowerCase().contains("hidromel") || 
-                nomeItem.toLowerCase().contains("poção") || 
-                nomeItem.toLowerCase().contains("cura")) {
-                
-                int cura = 40; // Hidromel cura 40 HP
-                this.jogador.curar(cura);
-                Tela.narrar("\n[ITEM USADO] " + nomeItem);
-                Tela.narrar("Você recuperou " + cura + " HP!");
-            } else {
-                // Item genérico
-                Tela.narrar("\n[ITEM USADO] " + nomeItem);
-                Tela.narrar("Você usou o item com sucesso!");
-            }
-            Tela.narrar("HP atual: " + this.jogador.getPontosVida() + "/" + this.jogador.getPontosVidaMax());
-            Tela.esperarEnter();
-            return true;
-        } else {
-            Tela.narrar("\n[ERRO] Você não possui esse item no inventário!");
-            Tela.narrar("Verifique o nome exato e tente novamente.");
-            Tela.esperarEnter();
-            return false;
-        }
-    }
-    */
 
         // Método para dar 1 poção aleatória (caminho seguro - após vencer batalha)
     private void darRecompensaBatalha() {
@@ -827,7 +674,7 @@ public class Jogo{
     }
 
     public void executarTurno(Personagem atacante, Personagem alvo) throws Exception {
-        int resultadoDado = Dado.rolar(6); //passando um dado de 6 lados
+        int resultadoDado = Dado.rolar(9); //passando um dado de 6 lados
 
         int ataqueBase = atacante.getAtaque();
         int defesaBaseOriginal = atacante.getDefesa();
