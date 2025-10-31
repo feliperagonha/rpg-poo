@@ -1,5 +1,12 @@
 package game;
 
+//imports para o save/load
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.File;
+
 import model.*;
 import util.*;
 import java.util.List;        
@@ -8,6 +15,7 @@ import java.util.ArrayList;
 
 public class Jogo{
     private Personagem jogador;
+    private Personagem savePoint = null;
     private int ataqueOriginal = 0;
     private int defesaOriginal = 0;
     private boolean buffAtivo = false;
@@ -30,10 +38,9 @@ public class Jogo{
                         break;
 
                     case 2:
-                        Tela.narrar("Função carregar jogo");
-                        Tela.esperarEnter();
+                        carregarJogo();
+                        opc = 3;
                         break;
-
                     case 3:
                         Tela.narrar("Saindo do jogo... Até a proxima!");
                         break;
@@ -56,12 +63,62 @@ public class Jogo{
         Tela.esperarEnter();
 
         Tela.imprimirArquivoTxt("historia/intro_pedra.txt");
+        Tela.esperarEnter();
         this.jogador = criarPersonagem();
+
+        salvarCheckpoint();
 
         Tela.narrar("\nPersonagem criado com sucesso!");
         Tela.imprimirStatus(this.jogador);
         Tela.esperarEnter();
         iniciarJornada();
+    }
+
+    private void salvarCheckpoint() {
+        try {
+            // 1. CHECKPOINT (EM MEMÓRIA ram) -
+            this.savePoint = (Personagem) this.jogador.clone();
+
+            // 2. SAVE (EM DISCO hd) - Salva o clone em um arquivo
+            try (FileOutputStream fos = new FileOutputStream("save.dat");
+                 ObjectOutputStream oos = new ObjectOutputStream(fos))
+            {
+                oos.writeObject(this.savePoint);
+            }
+
+            Tela.narrar("\n...Checkpoint salvo! (Início do Ato " + this.jogador.getNivel() + ")");
+            Tela.esperarEnter();
+
+        } catch (Exception e) {
+            Tela.narrar("\n[ERRO] Não foi possível salvar o checkpoint: " + e.getMessage());
+            Tela.esperarEnter();
+        }
+    }
+
+    private void carregarJogo() throws Exception {
+        File saveFile = new File("save.dat");
+        if (!saveFile.exists()) {
+            Tela.narrar("Nenhum jogo salvo encontrado!");
+            Tela.esperarEnter();
+            return; // Volta ao menu principal
+        }
+
+        try (FileInputStream fis = new FileInputStream(saveFile);
+             ObjectInputStream ois = new ObjectInputStream(fis))
+        {
+            this.savePoint = (Personagem) ois.readObject();
+            this.jogador = (Personagem) this.savePoint.clone();
+
+            Tela.narrar("Jogo carregado com sucesso!");
+            Tela.imprimirStatus(this.jogador);
+            Tela.esperarEnter();
+
+            iniciarJornada();
+
+        } catch (Exception e) {
+            Tela.narrar("\n[ERRO] Não foi possível carregar o jogo: " + e.getMessage());
+            Tela.esperarEnter();
+        }
     }
 
     private Personagem criarPersonagem() throws Exception {
@@ -110,15 +167,35 @@ public class Jogo{
 }
 
     private void iniciarJornada() throws Exception {
-        ato1();
+        // Usa o nível do jogador (que foi carregado) para pular ao Ato correto
+        switch (this.jogador.getNivel()) {
+            case 1:
+                ato1();
+                break;
+            case 2:
+                ato2();
+                break;
+            case 3:
+                ato3();
+                break;
+            default: // Segurança
+                Tela.narrar("Erro no save, iniciando do Ato 1.");
+                this.jogador.setNivel((byte)1);
+                ato1();
+                break;
+        }
     }
     
     // ========== ATO I: O INVERNO SEM FIM ==========
     private void ato1() throws Exception {
+        this.jogador.setNivel((byte)1);
+        salvarCheckpoint();
+
         Tela.limparTela();
         Tela.imprimirArquivoTxt("historia/ato1/inicio.txt");
         Tela.esperarEnter();
-        
+
+
         decisaoAto1();
     }
 
@@ -161,7 +238,9 @@ public class Jogo{
             darRecompensaBatalha(); // da a recompensa
             // tentar implementar soma do nivel do usuário, aumenta o nivel, dano e defesa em 20%
             Tela.narrar("Você derrotou os Draugr e segue viagem...\n");
-            Tela.esperarEnter();
+            this.jogador.setNivel((byte)2); // <-- ATUALIZA O NÍVEL
+            salvarCheckpoint();             // <-- SALVA O CHECKPOINT (ATO 2)
+
             ato2();
         }
     }
@@ -210,8 +289,9 @@ public class Jogo{
                             Item tonico = new Item("Tônico Revigorante", "Aumenta a resistência", "+2 HP Max", (short)1);
                             jogador.getInventario().adicionarItem(tonico);
                             jogador.setPontosVidaMax(jogador.getPontosVidaMax() + 2);
-                            
-                            Tela.esperarEnter();
+                            this.jogador.setNivel((byte)2); // <-- ATUALIZA O NÍVEL
+                            salvarCheckpoint();             // <-- SALVA O CHECKPOINT (ATO 2)
+
                             ato2();
                         }
                         
@@ -262,7 +342,7 @@ public class Jogo{
     private void ato2() throws Exception {
         Tela.limparTela();
         Tela.imprimirArquivoTxt("historia/ato2/inicio.txt");
-        
+        salvarCheckpoint();
         decisaoAto2();
     }
     
@@ -305,9 +385,10 @@ public class Jogo{
             Tela.narrar("Após derrotar a serpente, você explora os destroços.");
             darRecompensaBatalha();
            
-            Tela.esperarEnter();
+
             Tela.narrar("Você segue em frente...\n");
-            Tela.esperarEnter();
+            this.jogador.setNivel((byte)3); // <-- ATUALIZA O NÍVEL
+            salvarCheckpoint();             // <-- SALVA O CHECKPOINT (ATO 3)
             ato3();
         }
     }
@@ -329,7 +410,8 @@ public class Jogo{
         }
         
         Tela.narrar("A viagem se torna mais demorada, mas vocês seguem...\n");
-        Tela.esperarEnter();
+        this.jogador.setNivel((byte)3); // <-- ATUALIZA O NÍVEL
+        salvarCheckpoint();             // <-- SALVA O CHECKPOINT (ATO 3)
         ato3();
     }
     
@@ -337,8 +419,7 @@ public class Jogo{
     private void ato3() throws Exception {
         Tela.limparTela();
         Tela.imprimirArquivoTxt("historia/ato3/inicio.txt");
-
-        
+        salvarCheckpoint();
         enfrentarBossFinal();
     }
     
@@ -366,7 +447,7 @@ public class Jogo{
 
 
 
-    public void batalhar(Inimigo inimigo) throws Exception {
+    public boolean batalhar(Inimigo inimigo) throws Exception {
         salvarStatsOriginais();
         Tela.narrar("Um " + inimigo.getNome() + " selvagem aparece!");
         while (this.jogador.estaVivo() && inimigo.estaVivo()) {
@@ -439,12 +520,20 @@ public class Jogo{
             Tela.narrar("Você derrotou o " + inimigo.getNome() + "!");
             resetarStatsAposBatalha(); // RESETA os buffs
             Tela.esperarEnter();
+            return true;
         } else {
             Tela.narrar("\n*** DERROTA ***");
-            Tela.narrar("Você foi derrotado... Fim de jogo.");
+            Tela.narrar("Você foi derrotado... Retornando ao último checkpoint.");
             resetarStatsAposBatalha(); // RESETA os buffs
+
+            // RESPAWN: Clona o checkpoint de volta para o jogador
+            this.jogador = (Personagem) this.savePoint.clone();
+
+            Tela.imprimirStatus(this.jogador);
+
             Tela.esperarEnter();
         }
+        return false;
     }
 
 
@@ -493,7 +582,7 @@ public class Jogo{
 
     // Método para usar item do inventário durante a batalha
 
-        // Método para dar 1 poção aleatória (caminho seguro - após vencer batalha)
+    // Método para dar 1 poção aleatória (caminho seguro - após vencer batalha)
     private void darRecompensaBatalha() {
         int tipo = Dado.rolar(3); // 1, 2 ou 3
         Item pocao = criarPocaoAleatoria(tipo);

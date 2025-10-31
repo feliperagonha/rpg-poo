@@ -7,7 +7,7 @@ package model;
 
 import java.util.Objects;
 
-public abstract class Personagem implements Cloneable {
+public abstract class Personagem implements Cloneable,java.io.Serializable {
     private String nome;
     private int pontosVida;
     private int pontosVidaMax;
@@ -36,7 +36,7 @@ public abstract class Personagem implements Cloneable {
     // Construtor de cópia
     public Personagem(Personagem outro)  throws Exception
     {
-        if (outro == null){ throw new Exception("model.Personagem para cópia ausente"); }
+        if (outro == null){ throw new Exception("Personagem para cópia ausente"); }
         this.nome          = outro.nome;
         this.pontosVida    = outro.pontosVida;
         this.pontosVidaMax = outro.pontosVidaMax;
@@ -106,8 +106,7 @@ public abstract class Personagem implements Cloneable {
 
     public void mostrarInfos()
     {
-        System.out.printf("Nome: '%s'\nHP: %d/%d\nAtaque: %d\nDefesa: %d\nNível: %d\n",
-            getNome(), getPontosVida(), getPontosVidaMax(), getAtaque(), getDefesa(), getNivel());
+        System.out.println(this);
     }
 
     public boolean estaVivo(){
@@ -160,7 +159,7 @@ public abstract class Personagem implements Cloneable {
     public int hashCode()
     {
         int ret = 666;
-        ret = ret * 31 + nome.hashCode(); // Proteção 
+        ret = ret * 31 + Objects.hashCode(nome);
         ret = ret * 31 + ataque;
         ret = ret * 31 + defesa;
         ret = ret * 31 + nivel;
@@ -169,12 +168,19 @@ public abstract class Personagem implements Cloneable {
 
     @Override
     public String toString(){
-        return String.format("nome: '%s', HP: %d/%d, ataque = %d, defesa = %d, nivel = %d",
-        nome, pontosVida, pontosVidaMax, ataque, defesa, nivel);
+        // 1. Pega o status base
+        String statusBase = String.format("Nome: '%s'\nHP: %d/%d\nAtaque: %d\nDefesa: %d\nNível: %d",
+                this.nome, this.pontosVida, this.pontosVidaMax, this.ataque, this.defesa, this.nivel);
+
+        // 2. Pede ao inventário a sua String (CHAMA O INVENTARIO.TOSTRING())
+        String statusInventario = this.inventario.toString();
+
+        // 3. Retorna a combinação dos dois
+        return statusBase + "\n" + statusInventario;
     }
 
     @Override
-    public Personagem clone() {
+    public Object clone() {
         try {
             Personagem clonado = (Personagem) super.clone();
             clonado.inventario = this.inventario.clone(); // DEEP COPY

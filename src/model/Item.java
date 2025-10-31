@@ -1,6 +1,6 @@
 package model;
 
-public class Item implements Comparable<Item>{
+public class Item implements Comparable<Item>,Cloneable,java.io.Serializable{
     private String nome;
     private String descricao;
     private String efeito;
@@ -55,6 +55,12 @@ public class Item implements Comparable<Item>{
     @Override
     public int compareTo(Item outroItem) {
         return this.nome.compareToIgnoreCase(outroItem.nome);
+    }
+
+    @Override
+    public Object clone() {
+        // Retorna uma nova instância de Item usando o construtor de cópia.
+        return new Item(this);
     }
 
 

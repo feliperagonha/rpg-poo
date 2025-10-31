@@ -1,0 +1,15 @@
+--- Criação de Personagem ---
+
+A energia da runa ressoa em você. Quem você se tornará?
+
+1. O BERSERKER (Guerreiro)
+    HP: 150 | ATK: 20 | DEF: 5
+   Fúria viking devastadora em combate
+
+2. O ORACULO (Mago)
+    HP: 80 | ATK: 5 | DEF: 15
+   Magias de cura e maldição arcana
+
+3. O CAÇADOR (Arqueiro)
+    HP: 120 | ATK: 12 | DEF: 4
+   Precisão mortal e ataques críticos

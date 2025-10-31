@@ -1,9 +1,11 @@
 package model;
 
+import util.Tela;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Inventario implements Cloneable{
+public class Inventario implements Cloneable,java.io.Serializable{
     private List<Item> itens;
 
     public Inventario(){
@@ -64,38 +66,13 @@ public class Inventario implements Cloneable{
     }
 
     public void listarItens(){
-        if(this.itens.isEmpty()){
-            System.out.println("O inventario está vazio.");
-            return;
-        }
+        // 1. Chama o toString()
+        String representacaoDoInventario = this.toString();
 
-        /*Collections.sort(this.itens); Perguntar para o professor se pode usar isso
-        basicamente o metodo collections.sort ele pega o primeiro item e ver se tem o implements
-        comparable, se sim ele chama o compareTo e verifica: se der um num negativo = o primeiro item vem antes
-        do proximo, se for positivo = o primeiro vem dps, se for 0 é pq sao iguais para a ordenação*/
 
-        //algoritmo de ordenação
-        int n = this.itens.size(); //pega qnts itens tem na lista
-
-        for (int i = 0; i < n-1; i++){
-            for (int j = 0; j < n-1; j++){
-                Item itemAtual = this.itens.get(j);
-                Item itemProximo = this.itens.get(j + 1);
-
-                if(itemAtual.compareTo(itemProximo) > 0){
-                    //significa q o atual vai na frente do proximo
-                    this.itens.set(j, itemProximo); //joga o proximo pra tras aonde tava  o atual
-                    this.itens.set(j + 1, itemAtual); // joga o atual pra frente, aonde tava o proximo
-                }
-            }
-        }
-
-        System.out.println("---Inventario---");
-        for (Item item : this.itens){
-            System.out.println("- " + item.getNome() + " (x" + item.getQuantidade() + ")");
-        }
-        System.out.println("-----------------");
+        Tela.narrar(representacaoDoInventario);
     }
+
 
     public List<Item> getItens() {
         return this.itens;
@@ -105,4 +82,110 @@ public class Inventario implements Cloneable{
     public Inventario clone(){
         return new Inventario(this);
     }
+
+    @Override
+    public String toString() {
+        // 1. Chama o seu algoritmo de ordenação (bubble sort)
+        // que você já tem em 'listarItens'.
+        int n = this.itens.size();
+        for (int i = 0; i < n-1; i++){
+            for (int j = 0; j < n-1; j++){
+                Item itemAtual = this.itens.get(j);
+                Item itemProximo = this.itens.get(j + 1);
+
+                if(itemAtual.compareTo(itemProximo) > 0){
+                    this.itens.set(j, itemProximo);
+                    this.itens.set(j + 1, itemAtual);
+                }
+            }
+        }
+
+        // 2. Constrói a String
+        if (this.itens.isEmpty()) {
+            return "Inventario [Vazio]";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Inventario [\n");
+        for (Item item : this.itens) {
+            sb.append("  - ").append(item.getNome()).append(" (x").append(item.getQuantidade()).append(")\n");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || this.getClass() != obj.getClass()) return false;
+        Inventario outro = (Inventario) obj;
+
+        // Se o número de tipos de itens for diferente, os inventários são diferentes
+        if (this.itens.size() != outro.itens.size()) return false;
+
+        // Ordena ambas as listas para comparar
+
+        int n = this.itens.size();
+        for (int i = 0; i < n-1; i++){ // Ordena this.itens
+            for (int j = 0; j < n-1; j++){
+                if(this.itens.get(j).compareTo(this.itens.get(j+1)) > 0){
+                    Item temp = this.itens.get(j);
+                    this.itens.set(j, this.itens.get(j+1));
+                    this.itens.set(j+1, temp);
+                }
+            }
+        }
+
+        for (int i = 0; i < n-1; i++){ // Ordena outro.itens
+            for (int j = 0; j < n-1; j++){
+                if(outro.itens.get(j).compareTo(outro.itens.get(j+1)) > 0){
+                    Item temp = outro.itens.get(j);
+                    outro.itens.set(j, outro.itens.get(j+1));
+                    outro.itens.set(j+1, temp);
+                }
+            }
+        }
+
+        // Compara item por item (nome e quantidade)
+        for (int i = 0; i < this.itens.size(); i++) {
+            Item thisItem = this.itens.get(i);
+            Item outroItem = outro.itens.get(i);
+
+            // Compara o item (usando Item.equals, que checa nome e efeito)
+            if (!thisItem.equals(outroItem)) return false;
+
+            // Compara a quantidade
+            if (thisItem.getQuantidade() != outroItem.getQuantidade()) return false;
+        }
+        // Se passou por tudo, são iguais
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        //numero maligno
+        int ret = 666;
+        // Para um hashCode consistente com o equals,
+        // precisamos ordenar a lista primeiro.
+        int n = this.itens.size();
+        for (int i = 0; i < n-1; i++){
+            for (int j = 0; j < n-1; j++){
+                if(this.itens.get(j).compareTo(this.itens.get(j+1)) > 0){
+                    Item temp = this.itens.get(j);
+                    this.itens.set(j, this.itens.get(j+1));
+                    this.itens.set(j+1, temp);
+                }
+            }
+        }
+
+        // Agora calcula o hash com base nos itens ordenados
+        for (Item item : this.itens) {
+            ret = 31 * ret + item.hashCode(); // Usa o hash do item (nome+efeito)
+            ret = 31 * ret + item.getQuantidade(); // Adiciona a quantidade
+        }
+
+        if (ret < 0) ret = -ret;
+        return ret;
+    }
+
 }
