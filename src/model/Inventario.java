@@ -65,14 +65,6 @@ public class Inventario implements Cloneable,java.io.Serializable{
         return false;
     }
 
-    public void listarItens(){
-        // 1. Chama o toString()
-        String representacaoDoInventario = this.toString();
-
-
-        Tela.narrar(representacaoDoInventario);
-    }
-
     public List<Item> getItensUsaveisEmBatalha() {
         List<Item> itensUsaveis = new ArrayList<>();
         for (Item item : this.itens) {

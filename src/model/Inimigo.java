@@ -91,7 +91,7 @@ public class Inimigo extends Personagem {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()   {
         // 1. Pega o hashCode da classe mãe (baseado em nome, stats, etc.)
         int ret = super.hashCode();
 
