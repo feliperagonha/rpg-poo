@@ -825,7 +825,6 @@ public class Jogo{
                 atacante.setDefesa(defesaBaseOriginal);
             }
             Tela.narrar(atacante.getNome() + " volta ao normal.");
-            Tela.esperarEnter();
         }
         Tela.esperarEnter();
         Tela.limparTela();
