@@ -111,4 +111,5 @@ public class Inimigo extends Personagem {
         // 2. Adiciona a informação desta classe
         return "CLASSE: Inimigo\n" + stringDaClasseMae;
     }
+
 }

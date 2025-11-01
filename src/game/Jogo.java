@@ -95,6 +95,17 @@ public class Jogo{
         }
     }
 
+    private void carregarCheckPoint() {
+        if (this.savePoint != null) {
+            this.jogador = (Personagem) this.savePoint.clone();
+            Tela.narrar("...retornando ao último checkpoint...");
+            Tela.imprimirStatus(this.jogador);
+        } else {
+            Tela.narrar("ERRO FATAL: Nenhum checkpoint para carregar.");
+            // (Em um jogo real, forçaríamos o menu principal aqui)
+        }
+    }
+
     private void carregarJogo() throws Exception {
         File saveFile = new File("save.dat");
         if (!saveFile.exists()) {
@@ -250,6 +261,9 @@ public class Jogo{
             // tentar implementar soma do nivel do usuário, aumenta o nivel, dano e defesa em 20%
             Tela.narrar("Você derrotou os Draugr e segue viagem...\n");
             avancarParaAto((byte)2);//atualiza o nivel e avanca para o proximo ato
+        }else{
+            carregarCheckPoint();
+            avancarParaAto(jogador.getNivel());
         }
     }
 
@@ -257,7 +271,7 @@ public class Jogo{
         Tela.limparTela();
         Tela.imprimirArquivoTxt("historia/ato1/caminho_arriscado_intro.txt");
         Tela.esperarEnter();
-
+        salvarCheckpoint();
         Tela.imprimirArquivoTxt("historia/ato1/caminho_arriscado_perigo.txt");
         Tela.esperarEnter();
 
@@ -288,20 +302,16 @@ public class Jogo{
                         Tela.narrar("Você sofreu " + dano + " de dano pelas mordidas!");
                         Tela.narrar("HP atual: " + jogador.getPontosVida() + "/" + jogador.getPontosVidaMax() + "\n");
                         Tela.esperarEnter();
-
-                        if (jogador.estaVivo()) {
-                            Tela.narrar("Você atravessa a caverna e sai do outro lado!\n");
-                            Tela.esperarEnter();
-                            ato2();
-                        }
+                        carregarCheckPoint();
+                        avancarParaAto(jogador.getNivel());
 
                     } else {
                         // FALHA - dano pesado
                         Tela.imprimirArquivoTxt("historia/ato1/armadilha_falha.txt");
 
-                        int dano = 30;
-                        int defesaAtual = jogador.getDefesa();
-                        jogador.receberDano(dano + defesaAtual);
+                        int dano = jogador.getPontosVidaMax();
+
+                        jogador.receberDanoDireto(dano);
 
                         Tela.narrar("Você sofreu " + dano + " de dano!");
                         Tela.narrar("HP atual: " + jogador.getPontosVida() + "/" + jogador.getPontosVidaMax() + "\n");
@@ -439,6 +449,8 @@ public class Jogo{
 
         if (!jogador.estaVivo()) {
             Tela.narrar("💀 A exaustão foi demais... FIM DE JOGO");
+            carregarCheckPoint();
+            avancarParaAto(jogador.getNivel());
             return;
         }
 
@@ -473,6 +485,8 @@ public class Jogo{
             // DERROTA
             Tela.limparTela();
             Tela.imprimirArquivoTxt("historia/ato3/final_derrota.txt");
+            carregarCheckPoint();
+            avancarParaAto(this.jogador.getNivel());
         }
     }
 
@@ -493,16 +507,12 @@ public class Jogo{
                 continue;
             }
 
-
             boolean turnoGasto = true;
-
 
             int escolhaMapeada = escolha;
             if (this.jogador.getClass() != Oraculo.class && escolha > 1) {
                 escolhaMapeada = escolha + 1; // 2->3 (Usar Item)
             }
-
-
 
             switch (escolhaMapeada) {
                 case 1: // Ataque Básico
@@ -554,19 +564,12 @@ public class Jogo{
             return true;
         } else {
             Tela.narrar("\n*** DERROTA ***");
-            Tela.narrar("Você foi derrotado... Retornando ao último checkpoint.");
+            Tela.narrar("Você foi derrotado...");
             resetarStatsAposBatalha(); // RESETA os buffs
-
-            // RESPAWN: Clona o checkpoint de volta para o jogador
-            this.jogador = (Personagem) this.savePoint.clone();
-
-            Tela.imprimirStatus(this.jogador);
-
             Tela.esperarEnter();
         }
         return false;
     }
-
 
 
     private boolean tratarTurnoOraculo(Inimigo inimigo) throws Exception {
@@ -609,8 +612,6 @@ public class Jogo{
         }
         return true;
     }
-
-
 
     // Método para dar 1 poção aleatória (caminho seguro - após vencer batalha)
     private void darRecompensaBatalha() throws Exception {
