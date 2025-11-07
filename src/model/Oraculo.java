@@ -11,7 +11,7 @@ package model;
 // - Aumenta defesa em 10 e regenera 20 HP
 public class Oraculo extends Personagem{
     public Oraculo() throws Exception {
-        super("Oráculo", 80, 5, 15, (byte)1);
+        super("Oráculo", 80, 8, 13, (byte)1);
     }
     
     // Construtor de cópia 

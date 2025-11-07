@@ -1,0 +1,157 @@
+================================================================================
+                    RELATÓRIO DE CONTRIBUIÇÕES DO PROJETO
+                          JOGO RPG A RUNA DESPERTADA - POO
+================================================================================
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                            ALUNO: FELIPE RAGONHA                             │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+CONTRIBUIÇÕES NO PROJETO:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Classe Oraculo.java
+   ├─ Método amaldiçoar(Personagem alvo)
+   ├─ Desenvolvimento da Personagem.java
+   └─ Ajustei as habilidades do oráculo, garantindo que suas habilidades 
+      funcionem (curar e amaldiçoar), pois eu e bruno jogamos bastante para 
+      que ficasse sem bugs
+
+2. Classe Jogo.java - Sistema de Combate e Narrativa
+   ├─ Método usarItem(): Desenvolvi a funcionalidade completa de uso de itens
+   │  durante o combate, incluindo listagem do inventário, seleção do item,
+   │  aplicação dos efeitos (cura ou buff) e remoção/decremento da quantidade
+   │
+   ├─ Método iniciarJornada(): Implementei a estrutura narrativa completa dos
+   │  três atos da história viking (Ato I: Inverno Sem Fim, Ato II: Mar das
+   │  Serpentes, Ato III: Chegada em Thule), incluindo decisões do jogador
+   │  tudo isso dentro do jogo
+   │
+   └─ Método fugir(): opção de fugir com chance de falha conforme o requisito
+      do trabalho
+
+3. Opções na História
+   ├─ Implementação da armadilha na caverna (morcegos)
+   ├─ Chance de falha ao escolher a opção fugir
+   └─ Implementação dos Ato1 e Ato2
+
+4. Criação de Métodos Auxiliares
+   ├─ darRecompensaArmadilha()
+   ├─ darRecompensaBatalha()
+   ├─ usarItem()
+   └─ A ideia das poções ao ganhar a batalha pois assim que acabar a batalha
+      terá o método darRecompensaBatalha()
+
+5. Jogo.java - Sistema de Stats
+   ├─ ataqueOriginal
+   ├─ defesaOriginal
+   ├─ serve para salvarStatsOriginais()
+   └─ resetarStatsAposBatalha()
+   ├─ Validações necessárias
+   ├─ Métodos curar
+   └─ receberDanoDireto
+
+────────────────────────────────────────────────────────────────────────────────
+
+AUTOAVALIAÇÃO:
+
+Considero que contribuí de forma significativa para o projeto, especialmente
+no desenvolvimento da lógica de jogo e narrativa. Implementei funcionalidades
+complexas como o sistema de itens, mecânica de fuga e toda a estrutura
+narrativa dos três atos. Trabalhei em colaboração constante com o Bruno,
+integrando minhas implementações com as classes base que ele desenvolveu.
+
+Este projeto foi essencial para consolidar nossos conhecimentos de Programação
+Orientada a Objetos. Eu (Felipe) e o Bruno trabalhamos de forma totalmente
+colaborativa e com apoio mútuo constante, resultando em uma parceria 100% efetiva onde nós se dedicamos
+para o sucesso do trabalho.
+
+Nota: 9,0
+
+================================================================================
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                            ALUNO: BRUNO CESAR                                │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+CONTRIBUIÇÕES NO PROJETO:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Arquitetura e Design de Jogo
+   ├─ Idealização da história viking, descrição das classes (Berserker,
+   │  Oráculo, Caçador) e inimigos
+   │
+   ├─ Design do sistema de batalha híbrido: habilidades PASSIVAS (automáticas)
+   │  para Berserker/Caçador e ATIVAS (com sub-menu) apenas para o Oráculo
+   │
+   ├─ Design da lógica de ordem de ataque (Berserker ataca por último)
+   │
+   └─ Projeto da arquitetura de pacotes (game, model, util)
+
+2. Arquitetura de Interface (Pacote util)
+   ├─ Desenvolvimento completo da classe Tela, centralizando toda a impressão
+   │  do jogo
+   │
+   ├─ Implementação de métodos de imersão: imprimirComEfeito (typewriter),
+   │  carregarSom (.wav) e limparTela (qualquer S.O)
+   │
+   ├─ Implementação dos métodos de leitura de arquivos .txt: lerArquivo
+   │  (com BufferedReader), imprimirArquivoDeHistoria e imprimirArquivoTxt
+   │
+   └─ Implementação dos menus dinâmicos, como imprimirMenuBatalha(Personagem
+      jogador), que se adapta à classe do jogador
+
+3. Implementação do Modelo de Dados (Pacote model)
+   ├─ Criação das classes Item e Inventario
+   │
+   ├─ Implementação de todos os métodos obrigatórios para itens: equals(),
+   │  hashCode(), compareTo(), clone() (deep copy), toString()
+   │
+   ├─ Implementação da lógica de adicionarItem, removerItem e toString com
+   │  Bubble Sort manual na classe inventario
+   │
+   └─ Criação dos construtores base (sem validações) para as subclasses de
+      Personagem (Guerreiro, Mago, Arqueiro)
+
+4. Implementação da Lógica de Combate (Pacote game)
+   ├─ Desenvolvimento do método batalhar() (loop principal, escolhaMapeada
+   │  para menu dinâmico, lógica de turnoGasto)
+   │
+   ├─ Desenvolvimento do método tratarTurnoOraculo() (lógica do sub-menu e
+   │  passagem de parâmetro int escolha para a habilidade)
+   │
+   ├─ Desenvolvimento do método tratarTurnoAtaquePadrao() (gerencia a ordem
+   │  de ataque correta para o Berserker)
+   │
+   ├─ Desenvolvimento do método executarTurno() (cálculo de dano e ativação
+   │  das habilidades passivas de Fúria e Crítico)
+   │
+   └─ Depuração e correção de bugs de lógica (ex: "turno duplo")
+
+5. Sistema de Persistência (Save/Load)
+   ├─ Implementação de Serializable nas classes model
+   │
+   └─ Criação do sistema de save duplo:
+      ├─ Checkpoint em RAM (via jogador.clone()) para respawn após a batalha
+      └─ Save persistente em arquivo (save.dat) para carregar o jogo após
+         fechá-lo
+
+────────────────────────────────────────────────────────────────────────────────
+
+AUTOAVALIAÇÃO:
+
+Contribuí de forma fundamental na construção da arquitetura completa do
+projeto, desde a idealização da história viking até a implementação de todas
+as classes de interface (util) e da lógica central do jogo (game). Fui
+responsável por todo o sistema de batalha, o fluxo de turnos, o design híbrido
+de habilidades (passivas/ativas) e a complexa refatoração da história para
+arquivos .txt, garantindo uma separação clara entre lógica e conteúdo.
+
+Eu e o Felipe Asseguramos que todos os requisitos do PDF fossem implementados
+e depurados. O trabalho foi desenvolvido em dupla de forma colaborativa com o
+Felipe, onde minha arquitetura do jogo integrou as classes de modelo que ele
+desenvolveu, resultando em um projeto completo e robusto.
+
+Nota: 9,5
+

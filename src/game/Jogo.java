@@ -273,7 +273,7 @@ public class Jogo{
         Tela.esperarEnter();
         salvarCheckpoint();
         Tela.imprimirArquivoTxt("historia/ato1/caminho_arriscado_perigo.txt");
-        Tela.esperarEnter();
+
 
         int escolhaArmadilha = -1;
         while (escolhaArmadilha != 1 && escolhaArmadilha != 2) {
@@ -302,8 +302,8 @@ public class Jogo{
                         Tela.narrar("Você sofreu " + dano + " de dano pelas mordidas!");
                         Tela.narrar("HP atual: " + jogador.getPontosVida() + "/" + jogador.getPontosVidaMax() + "\n");
                         Tela.esperarEnter();
-                        carregarCheckPoint();
-                        avancarParaAto(jogador.getNivel());
+
+                        avancarParaAto((byte) 2);
 
                     } else {
                         // FALHA - dano pesado
@@ -319,7 +319,8 @@ public class Jogo{
 
                         if (!jogador.estaVivo()) {
                             Tela.narrar("💀 Você foi devorado pelos morcegos... FIM DE JOGO");
-                            return;
+                            Tela.esperarEnter();
+                            exibirMenuPrincipal();
                         }
 
                         Tela.narrar("Gravemente ferido, você cambaleia para fora da caverna.");
@@ -383,9 +384,9 @@ public class Jogo{
 
     // ========== ATO II: O MAR DAS SERPENTES ==========
     private void ato2() throws Exception {
+        salvarCheckpoint();
         Tela.limparTela();
         Tela.imprimirArquivoTxt("historia/ato2/inicio.txt");
-        salvarCheckpoint();
         decisaoAto2();
     }
 
@@ -427,7 +428,7 @@ public class Jogo{
         if (jogador.estaVivo()) {
             Tela.narrar("Após derrotar a serpente, você explora os destroços.");
             darRecompensaBatalha();
-
+            salvarCheckpoint();
 
             Tela.narrar("Você segue em frente...\n");
             avancarParaAto((byte)3);//atualiza o nivel e avanca para o proximo ato
@@ -726,6 +727,7 @@ public class Jogo{
         if (efeito.equals("CURA")) {
             this.jogador.curar(potencia); // <-- USA A POTÊNCIA
             Tela.narrar("💚 Você recuperou " + potencia + " HP!");
+            Tela.narrar("\nHP atual: " + this.jogador.getPontosVida() + "/" + this.jogador.getPontosVidaMax());
 
         } else if (efeito.equals("DANO_X")) { // <-- MUDA PARA O EFEITO GENÉRICO
             int ataqueOriginal = this.jogador.getAtaque();
@@ -743,7 +745,7 @@ public class Jogo{
         }
 
 
-        Tela.narrar("\nHP atual: " + this.jogador.getPontosVida() + "/" + this.jogador.getPontosVidaMax());
+
         Tela.esperarEnter();
         return true;
     }
@@ -788,11 +790,12 @@ public class Jogo{
     public void executarTurno(Personagem atacante, Personagem alvo) throws Exception {
         int resultadoDado = Dado.rolar(9); //passando um dado de 6 lados
 
+        //usado para restaura ataque e defesa basico depois de modificalos com habilidades
         int ataqueBase = atacante.getAtaque();
         int defesaBaseOriginal = atacante.getDefesa();
+
         int ataqueBaseComBonus = atacante.getAtaque();
 
-        String narracaoHabilidade = null;
         boolean habilidadeAtivada = false;
 
         habilidadeAtivada = atacante.aplicarPassivaDeAtaque(alvo); //evita ter q usar getClass pra duto

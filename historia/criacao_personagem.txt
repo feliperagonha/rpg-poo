@@ -7,7 +7,7 @@ A energia da runa ressoa em você. Quem você se tornará?
    Fúria viking devastadora em combate
 
 2. O ORACULO (Mago)
-    HP: 80 | ATK: 5 | DEF: 15
+    HP: 80 | ATK: 8 | DEF: 13
    Magias de cura e maldição arcana
 
 3. O CAÇADOR (Arqueiro)
